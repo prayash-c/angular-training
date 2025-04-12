@@ -12,6 +12,7 @@ export class OtploginComponent {
   submitted = false;
   email = 'john@email.com';
   otpArray = new Array(6);
+  otp = ['', '', '', '', '', ''];
   timerFlag: boolean = false;
   timeLeft: number = 0;
   interval: any = null;
@@ -20,7 +21,11 @@ export class OtploginComponent {
     otp: ['', []],
   });
 
-  onSubmit() {}
+  onSubmit() {
+    const otpToString = this.otp.join('');
+    console.log(otpToString);
+    this.otp = ['', '', '', '', '', ''];
+  }
 
   timer() {
     this.timerFlag = true;
@@ -41,6 +46,22 @@ export class OtploginComponent {
           this.interval = null;
         }
       }, 1000);
+    }
+  }
+
+  moveToNext(event: any, index: number) {
+    const input = event.target;
+    const value = input.value; // gives triggered key number
+    if (value.length === 1 && index < this.otp.length - 1) {
+      input.nextElementSibling?.focus(); // event.target.nextElementSibling
+    }
+  }
+
+  moveToPrev(event: any, index: number) {
+    if (index > 0 && !(event.target as HTMLInputElement).value) {
+      const prev = (event.target as HTMLElement)
+        .previousElementSibling as HTMLInputElement;
+      prev?.focus();
     }
   }
 }

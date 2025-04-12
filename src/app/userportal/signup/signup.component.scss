@@ -1,0 +1,24 @@
+.country-code {
+  width: 20%;
+  height: 100%;
+  text-align: center;
+  border: none;
+  border-right: 1px solid #d0d5dd;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.phone-box {
+  width: 80%;
+  height: 100%;
+  text-align: left;
+  padding-left: 8px;
+  border: none;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+}

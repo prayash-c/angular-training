@@ -1,28 +1,30 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
+import { userinfo } from '../api';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserinfoService {
+  constructor() {}
 
-  constructor() { }
-  
-  getEmail:string = "john@email.com";
+  getEmail: string = 'john@email.com';
+  userdata: userinfo = {
+    fullname: '',
+    email: '',
+  };
 
-  setEmail(email:any) {
+  setEmail(email: any) {
     this.getEmail = email;
   }
 
-  emittedEmail() : Observable<any>{ 
-    const getEmail = this.getEmail;
-    return of(getEmail);
-  }
+  emittedEmail = new Observable((signup) => {
+    signup.next(this.getEmail);
+  });
 
   emailExistObsv = new Observable((obs) => {
     setTimeout(() => {
       obs.next(true);
-    }, 1000)
-  })
-
+    }, 1000);
+  });
 }

@@ -1,4 +1,10 @@
 export interface emailValidate {
   message?: string;
-  email: string;
+  email: any;
+}
+
+export interface userinfo {
+  fullname: any;
+  email: any;
+  phone?: any;
 }

@@ -11,7 +11,7 @@ export class ApiService {
 
   // https://dev-api.stayeasyonline.com/stayeasyapi/v1/user/sendLoginOtp
 
-  emailOtp(payload: string) {
+  emailOtp(payload: any) {
     return this.http.post<emailValidate>(
       `https://dev-api.stayeasyonline.com/stayeasyapi/v1/user/sendLoginOtp`,
       payload

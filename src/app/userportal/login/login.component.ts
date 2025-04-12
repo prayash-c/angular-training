@@ -20,7 +20,6 @@ export class LoginComponent {
 
   submitted: boolean = false;
   loading: boolean = false;
-  email: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -35,42 +34,33 @@ export class LoginComponent {
 
   onSubmit() {
     this.submitted = true;
-    if (this.loginForm.valid) {
-      this.email = this.loginForm.get('email')?.value || '';
+    this.loading = true;
+    if (this.loginForm.get('email')?.valid) {
+      const email = String(this.loginForm.get('email')?.value);
       // check on api
-      // this.apiservice.emailOtp(this.email).subscribe(
-      //   (res) => {
+      // this.apiservice.emailOtp(email).subscribe({
+      //   next: (res: any) => {
       //     this.loading = false;
-      //     if(res){
+      //     if (res) {
       //       this.router.navigate(['otplogin']);
       //     }
       //   },
-      //   (err) => {
+      //   error: (err) => {
       //     this.loading = false;
-      //     if(err?.status == 500){
-      //     this.router.navigate(['signup']);
-      //     } else{
-      //     console.log("Error while logging in, please try again later!")
+      //     if (err?.status == 500) {
+      //       this.router.navigate(['signup']);
+      //     } else {
+      //       console.log('Error while logging in, please try again later!');
       //     }
       //     console.log('error');
-      //   }
-      // );
+      //   },
+      // });
 
-      const checkEmail = new Observable((emailObv) => {
-        this.emailService.emailExistObsv.subscribe((val) => {
-          if (val) {
-            emailObv.next(true);
-          } else {
-            emailObv.next(false);
-          }
-        });
-      });
-
-      this.loading = true;
-      checkEmail.subscribe({
+      this.emailService.emailExistObsv.subscribe({
         next: (val: any) => {
           if (val) {
-            this.emailService.setEmail(this.email);
+            this.emailService.setEmail(email);
+            // localStorage.setItem('email', email);
             this.router.navigate(['signup']);
           } else {
             this.router.navigate(['home']);
