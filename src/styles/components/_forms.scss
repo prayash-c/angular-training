@@ -1,0 +1,131 @@
+.input-field {
+  padding: 10px 14px;
+}
+
+.form-padding {
+  // height: 292px;
+  // width: 640px;
+  padding: 40px 32px;
+
+  @include media-breakpoint-down(sm) {
+    padding: 16px;
+  }
+}
+
+.at-form-label {
+  @extend .at-font-b3-med;
+  color: #344054;
+}
+
+@mixin textbox-base {
+  padding: 10px 14px;
+  border: 1px solid $gray-300;
+  border-radius: 8px;
+  height: 42px;
+  width: 336px;
+  box-shadow: 0px 1px 2px 0px #1018280d;
+  transition: all 0.2s ease-in-out;
+
+  @include media-breakpoint-down(md) {
+    width: 100%;
+  }
+}
+
+.at-textbox {
+  @include textbox-base;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover {
+    border-color: $blue-300;
+    box-shadow: 0px 0px 0px 5px #e5edfe;
+  }
+
+  &-disabled {
+    @include textbox-base;
+
+    &:disabled {
+      background-color: #ebebf1;
+      color: $gray-400;
+    }
+  }
+
+  &-otp {
+    border: 1px solid $gray-300;
+    border-radius: 10px;
+    height: 44px;
+    width: 40px;
+    box-shadow: 0px 1px 2px 0px #1018280d;
+    color: $gray-500;
+    font-size: 16px;
+    text-align: center;
+    transition: all 0.2s ease-in-out;
+  }
+}
+
+.inside-form {
+  width: 336px;
+}
+
+.at-button {
+  @extend .at-font-b2-bold;
+  height: 46px;
+  width: 336px;
+  border-radius: 8px;
+  background-color: $blue-600;
+  color: #fff;
+  transition: all 0.2s ease-in-out;
+
+  &:disabled {
+    border: 1px solid $blue-200;
+    background-color: $blue-200;
+    color: #fff;
+  }
+
+  @include media-breakpoint-down(md) {
+    width: 100%;
+  }
+
+  &-resend {
+    @extend .at-font-b2-bold;
+    height: 46px;
+    width: 336px;
+    border: 1px solid $gray-300;
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: $gray-700;
+
+    &:disabled {
+      border-color: $gray-200;
+      background-color: #ffffff; // blue 200
+      color: $gray-300;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    &:hover {
+      background-color: $gray-50;
+      color: #000000;
+    }
+  }
+}
+
+.at-checkbox-med {
+  height: 20px;
+  width: 20px;
+  border: 1px solid $gray-300;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+
+  .checkmark {
+    height: 20px;
+    width: 20px;
+    color: $blue-500;
+    border: 1px solid $blue-500;
+    background-color: $blue-50;
+    border-radius: 6px;
+  }
+}

@@ -1,0 +1,112 @@
+@font-face {
+    font-family: 'Manrope-bold';
+    src: url(../assets/fonts/Manrope-Bold.ttf);
+    font-weight: 700;
+}
+@font-face {
+    font-family: 'Manrope-med';
+    src: url(../assets/fonts/Manrope-Medium.ttf);
+    font-weight: 500;
+}
+@font-face {
+    font-family: 'Manrope-reg';
+    src: url(../assets/fonts/Manrope-Regular.ttf);
+    font-weight: 400;
+}
+
+.at-font-h4{
+    font-size: 39px;
+    &-bold{
+        font-family: 'Manrope-bold';
+    }
+    &-med{
+        font-family: 'Manrope-med';
+    }
+    &-reg{
+        font-family: 'Manrope-reg';
+    }
+}
+
+.at-font-h5-bold{
+    font-family: 'Manrope-bold';
+    font-size: 31px;
+}
+.at-font-h5-med{
+    font-family: 'Manrope-med';
+    font-size: 31px;
+}
+.at-font-h5-reg{
+    font-family: 'Manrope-reg';
+    font-size: 31px;
+}
+
+.at-font-h6-bold{
+    font-family: 'Manrope-bold';
+    font-size: 24px;
+}
+.at-font-h6-med{
+    font-family: 'Manrope-med';
+    font-size: 24px;
+}
+.at-font-h6-reg{
+    font-family: 'Manrope-reg';
+    font-size: 24px;
+}
+
+.at-font-b1-bold{
+    font-family: 'Manrope-bold';
+    font-size: 20px;
+}
+.at-font-b1-med{
+    font-family: 'Manrope-med';
+    font-size: 20px;
+}
+.at-font-b1-reg{
+    font-family: 'Manrope-reg';
+    font-size: 20px;
+}
+
+.at-font-b2-bold{
+    font-family: 'Manrope-bold';
+    font-size: 16px;
+    line-height: 24px;
+}
+.at-font-b2-med{
+    font-family: 'Manrope-med';
+    font-size: 16px;
+    line-height: 24px;
+}
+.at-font-b2-reg{
+    font-family: 'Manrope-reg';
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.at-font-b3-bold{
+    font-family: 'Manrope-bold';
+    font-size: 14px;
+    line-height: 21px;
+}
+.at-font-b3-med{
+    font-family: 'Manrope-med';
+    font-size: 14px;
+    line-height: 21px;
+}
+.at-font-b3-reg{
+    font-family: 'Manrope-reg';
+    font-size: 14px;
+    line-height: 21px;
+}
+
+.at-font-b4-bold{
+    font-family: 'Manrope-bold';
+    font-size: 12px;
+}
+.at-font-b4-med{
+    font-family: 'Manrope-med';
+    font-size: 12px;
+}
+.at-font-b4-reg{
+    font-family: 'Manrope-reg';
+    font-size: 12px;
+}

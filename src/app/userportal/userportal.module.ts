@@ -7,13 +7,15 @@ import { SignupComponent } from './signup/signup.component';
 import { HomeComponent } from './home/home.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { OtploginComponent } from './otplogin/otplogin.component';
 
 
 @NgModule({
   declarations: [
     LoginComponent,
     SignupComponent,
-    HomeComponent
+    HomeComponent,
+    OtploginComponent
   ],
   imports: [
     CommonModule,

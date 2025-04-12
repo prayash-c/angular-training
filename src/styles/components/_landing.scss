@@ -1,0 +1,72 @@
+.background-img {
+  background: url("../../assets/login-banner.jpg") no-repeat;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+
+  @include media-breakpoint-down(sm) {
+    border-bottom-right-radius: 24px;
+    border-bottom-left-radius: 24px;
+  }
+}
+
+.logo-img {
+  display: flex;
+  align-self: end;
+  width: auto;
+  height: 73.19999694824219px;
+  object-fit: contain;
+  margin: 32px;
+  z-index: 0;
+
+  @include media-breakpoint-down(sm) {
+    margin-left: 16px;
+  }
+}
+
+.tint {
+  background: linear-gradient(
+    rgba(51, 51, 52, 0.53) 6.83%,
+    rgba(51, 51, 51, 0) 44.09%,
+    rgba(51, 51, 51, 0) 48.48%,
+    #292929 99.48%
+  );
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  @include media-breakpoint-down(sm) {
+    border-bottom-right-radius: 24px;
+    border-bottom-left-radius: 24px;
+  }
+}
+
+.loading {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner {
+  width: 100px;
+  height: 100px;
+}
+
+.title-heading {
+  @extend .at-font-h6-bold;
+  color: $gray-800;
+}
+
+.helper {
+  @extend .at-font-b3-med;
+  color: $gray-500;
+}

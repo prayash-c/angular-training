@@ -1,0 +1,27 @@
+html {
+  margin: 0px;
+  height: 100%;
+}
+
+body {
+  margin: 0px;
+  height: 100%;
+  @extend .global-text;
+}
+
+.mainframe {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.warning {
+  color: #f97066;
+  @extend .at-font-b3-reg;
+}
+
+.global-text {
+  @extend .at-font-b2-reg;
+  color: $gray-800;
+}

@@ -1,15 +1,20 @@
 import { Injectable } from '@angular/core';
 
+import { emailValidate } from '../api';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService {
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
+  // https://dev-api.stayeasyonline.com/stayeasyapi/v1/user/sendLoginOtp
 
-  validate() {
-    
+  emailOtp(payload: string) {
+    return this.http.post<emailValidate>(
+      `https://dev-api.stayeasyonline.com/stayeasyapi/v1/user/sendLoginOtp`,
+      payload
+    );
   }
 }
