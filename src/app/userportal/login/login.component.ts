@@ -63,7 +63,8 @@ export class LoginComponent {
             // localStorage.setItem('email', email);
             this.router.navigate(['signup']);
           } else {
-            this.router.navigate(['home']);
+            this.emailService.setEmail(email);
+            this.router.navigate(['otplogin']);
           }
         },
       });

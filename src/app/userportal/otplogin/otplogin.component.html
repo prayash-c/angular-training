@@ -18,15 +18,17 @@
           novalidate
         >
           <div class="d-flex flex-column gap-1 mb-4">
-            <div class="d-flex flex-row justify-content-between">
+            <div
+              class="d-flex flex-row justify-content-between"
+              formArrayName="otp"
+            >
               <input
                 name="otp"
                 type="text"
-                formControlName="otp"
                 class="at-textbox-otp"
                 maxlength="1"
                 *ngFor="let digit of otpArray; let i = index"
-                [(ngModel)]="otp[i]"
+                [formControlName]="i"
                 (input)="moveToNext($event, i)"
                 (keydown.backspace)="moveToPrev($event, i)"
               />
@@ -53,7 +55,7 @@
 
             <button
               class="btn btn-primary at-button"
-              [disabled]="otpForm.get('email')?.invalid || timeLeft > 0"
+              [disabled]="otpForm.get('otp')?.invalid || timeLeft > 0"
             >
               Get Started
             </button>
