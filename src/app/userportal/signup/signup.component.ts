@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UserinfoService } from '../userinfo.service';
 import { Router } from '@angular/router';
+import { ApiService } from '../api.service';
 
 @Component({
   selector: 'app-signup',
@@ -12,21 +13,25 @@ export class SignupComponent {
   constructor(
     private fb: FormBuilder,
     private userInfoService: UserinfoService,
-    private router: Router
+    private router: Router,
+    private apiService: ApiService
   ) {}
 
   customercare: string = 'customercare@stayeasyonline.com';
 
   email: string = '';
+  focusOut = false;
   termsAndConditionCheck: boolean = false;
   onPopupClick: boolean = false;
+  loading: boolean = false;
 
   ngOnInit(): void {
-    this.userInfoService.emittedEmail.subscribe({
-      next: (res: any) => {
-        this.email = res;
-      },
-    });
+    // this.userInfoService.emittedEmail.subscribe({
+    //   next: (res: any) => {
+    //     this.email = res;
+    //   },
+    // });
+    this.email = String(localStorage.getItem('email'));
     this.signupForm.patchValue({
       email: this.email,
     });
@@ -37,32 +42,55 @@ export class SignupComponent {
   signupForm = this.fb.group({
     fullname: [
       '',
-      [Validators.required, Validators.maxLength(25), Validators.minLength(3)],
+      [Validators.required], //, Validators.maxLength(25), Validators.minLength(3)
     ],
     email: [{ value: '', disabled: true }],
     countryCode: [{ value: '+91', disabled: true }],
     phone: ['', [Validators.pattern(/^([7-9][0-9]{9})$/)]],
+    terms: [false, [Validators.requiredTrue]],
   });
 
   onSubmit() {
+    this.loading = true;
     this.submitted = true;
-    const name = String(this.signupForm.get('fullname')?.value);
-    const phone = this.signupForm.get('phone')?.value || null;
-    const countryCode = this.signupForm.get('countryCode')?.value || null;
+    const fullName = String(this.signupForm.get('fullname')?.value);
+    const phone = String(this.signupForm.get('phone')?.value);
+    const countryCode = String(this.signupForm.get('countryCode')?.value);
+    const hotelId: string = '';
+    const contactNumber = countryCode?.concat(phone);
     if (this.signupForm.valid) {
-      console.log(this.userInfoService.getEmail);
-      console.log(name, 'Signed in!');
-      console.log(countryCode, phone);
+      this.apiService
+        .registerOtp(contactNumber, this.email, fullName, hotelId)
+        .subscribe({
+          next: (res: any) => {
+            if (res) {
+              this.loading = false;
+              console.log('Registration successful!');
+              localStorage.setItem('name', fullName);
+              this.router.navigate(['otplogin'], { replaceUrl: true });
+            }
+          },
+          error: (err: any) => {
+            if (err?.status == 500) {
+              this.loading = false;
+              console.log('error occures', err);
+            }
+          },
+        });
       // this.userInfoService.userdata.fullname = name;
       // this.userInfoService.userdata.email = this.email;
-      localStorage.setItem('name', name);
-      localStorage.setItem('email', this.email);
-      this.router.navigate(['home']);
     }
+  }
+
+  boxFocus() {
+    this.focusOut = true;
   }
 
   onTermsAndConditionToggle() {
     this.termsAndConditionCheck = !this.termsAndConditionCheck;
+    this.signupForm.patchValue({
+      terms: this.termsAndConditionCheck,
+    });
   }
 
   termsAndConditionPopup() {

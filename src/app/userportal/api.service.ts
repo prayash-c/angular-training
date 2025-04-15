@@ -9,12 +9,39 @@ import { HttpClient } from '@angular/common/http';
 export class ApiService {
   constructor(private http: HttpClient) {}
 
-  // https://dev-api.stayeasyonline.com/stayeasyapi/v1/user/sendLoginOtp
+  // https://dev-api.stayeasyonline.com/stayeasyapi/v1/user/sendLoginOtp -> login
+  // `https://dev-api.stayeasyonline.com/stayeasyapi/v1/user/validateLoginOtp` -> validateOtp
+  // APP_ERROR_1005 -> go to register
+  // https://dev-api.stayeasyonline.com/stayeasyapi/v1/user/generateOtp -> after register
 
-  emailOtp(payload: any) {
+  emailOtp(email: string) {
     return this.http.post<emailValidate>(
       `https://dev-api.stayeasyonline.com/stayeasyapi/v1/user/sendLoginOtp`,
-      payload
+      { emailAddress: email }
+    );
+  }
+
+  validateOtp(email: string, otp: string) {
+    return this.http.post<emailValidate>(
+      `https://dev-api.stayeasyonline.com/stayeasyapi/v1/user/validateLoginOtp`,
+      { emailAddress: email, otp: otp }
+    );
+  }
+
+  registerOtp(
+    contactNumber: string,
+    email: string,
+    fullName: string,
+    hotelId: string
+  ) {
+    return this.http.post<emailValidate>(
+      `https://dev-api.stayeasyonline.com/stayeasyapi/v1/user/generateOtp`,
+      {
+        contactNumber: contactNumber,
+        email: email,
+        fullName: fullName,
+        hotelId: hotelId,
+      }
     );
   }
 }

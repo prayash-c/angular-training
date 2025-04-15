@@ -24,7 +24,7 @@ export class UserinfoService {
 
   emailExistObsv = new Observable((obs) => {
     setTimeout(() => {
-      obs.next(false); // check api for email
+      obs.next(true); // check api for email
     }, 1000);
   });
 }

@@ -1,6 +1,10 @@
 export interface emailValidate {
   message?: string;
-  email: any;
+  email: string;
+  otp?: string;
+  contactNumber?: string;
+  fullName?: string;
+  hotelId?: string;
 }
 
 export interface userinfo {

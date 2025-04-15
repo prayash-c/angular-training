@@ -1,67 +1,69 @@
-<div class="mainframe flex-column flex-sm-row">
-  <div class="background-img d-flex col-12 col-sm-6 flex-grow-1">
+<div class="loading" *ngIf="loading">
+  <img class="spinner" src="assets/se-loader.gif" />
+</div>
+<div class="d-flex flex-column flex-md-row h-100">
+  <div class="background-img d-flex col-12 col-md-6 flex-grow-1">
     <div class="tint"></div>
-    <!-- <<div class="logo-img d-flex ms-3 mb-4"></div>> -->
     <img class="logo-img" src="assets\stayeasy-logo-edited.png" />
   </div>
-  <div class="d-flex col-12 col-sm-6 align-items-center">
-    <div class="d-flex flex-column form-padding gap-3">
-      <div class="d-grid gap-2 mb-1">
-        <div class="title-heading">Enter the OTP</div>
+  <div class="d-flex col-12 col-md-6 align-items-center flex-shrink-0">
+    <div class="d-flex flex-column form-padding gap-3 flex-grow-1">
+      <div class="d-grid gap-2">
+        <div class="title-heading">Login to Stay Easy</div>
         <div class="helper">Sent to {{ email }}</div>
       </div>
-      <div class="col-12 col-sm-10 col-md-6">
-        <form
-          class="inside-form"
-          [formGroup]="otpForm"
-          (ngSubmit)="onSubmit()"
-          novalidate
-        >
-          <div class="d-flex flex-column gap-1 mb-4">
-            <div
-              class="d-flex flex-row justify-content-between"
-              formArrayName="otp"
-            >
-              <input
-                name="otp"
-                type="text"
-                class="at-textbox-otp"
-                maxlength="1"
-                *ngFor="let digit of otpArray; let i = index"
-                [formControlName]="i"
-                (input)="moveToNext($event, i)"
-                (keydown.backspace)="moveToPrev($event, i)"
-              />
-            </div>
-            <span class="warning" *ngIf=""> Please enter correct OTP </span>
+      <form
+        class="col-12 col-md-6"
+        [formGroup]="otpForm"
+        (ngSubmit)="onSubmit()"
+        novalidate
+      >
+        <div class="d-flex flex-column gap-1 mb-4 w-100">
+          <div
+            class="d-flex flex-row justify-content-between"
+            formArrayName="otp"
+          >
+            <input
+              name="otp"
+              type="text"
+              class="at-textbox-otp"
+              maxlength="1"
+              *ngFor="let digit of otpArray; let i = index"
+              [formControlName]="i"
+              (input)="moveToNext($event, i)"
+              (keydown.backspace)="moveToPrev($event, i)"
+            />
           </div>
-          <div class="d-grid gap-2 mb-4">
-            <label class="helper" for="email" *ngIf="timerFlag">
-              Haven't received the OTP,
-              {{
-                timeLeft > 0
-                  ? "try again in " + timeLeft + " seconds."
-                  : "try resending"
-              }}
-            </label>
+          <span class="warning" *ngIf="incorrectOtp">
+            Please enter correct OTP
+          </span>
+        </div>
+        <div class="d-grid gap-2 mb-4">
+          <label class="helper" for="email">
+            Haven't received the OTP,
+            {{
+              timeLeft > 0
+                ? "try again in " + timeLeft + " seconds."
+                : "try resending"
+            }}
+          </label>
 
-            <button
-              class="at-button-resend"
-              (click)="timer()"
-              [disabled]="timeLeft > 0"
-            >
-              {{ timerFlag ? "Resend" : "Send" }} OTP
-            </button>
+          <button
+            class="at-button-resend"
+            (click)="resendOtp()"
+            [disabled]="timeLeft > 0"
+          >
+            Resend OTP
+          </button>
 
-            <button
-              class="btn btn-primary at-button"
-              [disabled]="otpForm.get('otp')?.invalid || timeLeft > 0"
-            >
-              Get Started
-            </button>
-          </div>
-        </form>
-      </div>
+          <button
+            class="btn btn-primary at-button"
+            [disabled]="otpForm.get('otp')?.invalid || timeLeft > 0"
+          >
+            Verify & Login
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

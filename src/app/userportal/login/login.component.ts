@@ -38,34 +38,25 @@ export class LoginComponent {
     if (this.loginForm.get('email')?.valid) {
       const email = String(this.loginForm.get('email')?.value);
       // check on api
-      // this.apiservice.emailOtp(email).subscribe({
-      //   next: (res: any) => {
-      //     this.loading = false;
-      //     if (res) {
-      //       this.router.navigate(['otplogin']);
-      //     }
-      //   },
-      //   error: (err) => {
-      //     this.loading = false;
-      //     if (err?.status == 500) {
-      //       this.router.navigate(['signup']);
-      //     } else {
-      //       console.log('Error while logging in, please try again later!');
-      //     }
-      //     console.log('error');
-      //   },
-      // });
-
-      this.emailService.emailExistObsv.subscribe({
-        next: (val: any) => {
-          if (val) {
+      this.apiservice.emailOtp(email).subscribe({
+        next: (res: any) => {
+          this.loading = false;
+          if (res) {
             this.emailService.setEmail(email);
-            // localStorage.setItem('email', email);
-            this.router.navigate(['signup']);
-          } else {
-            this.emailService.setEmail(email);
-            this.router.navigate(['otplogin']);
+            localStorage.setItem('email', email);
+            this.router.navigate(['otplogin'], { replaceUrl: true });
           }
+        },
+        error: (err) => {
+          this.loading = false;
+          if (err?.status == 500) {
+            this.emailService.setEmail(email);
+            localStorage.setItem('email', email);
+            this.router.navigate(['signup'], { replaceUrl: true });
+          } else {
+            console.log('Error while logging in, please try again later!');
+          }
+          console.log(err);
         },
       });
     }

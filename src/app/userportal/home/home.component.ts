@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserinfoService } from '../userinfo.service';
 import { Router } from '@angular/router';
+import { ApiService } from '../api.service';
 
 @Component({
   selector: 'app-home',
@@ -10,11 +11,14 @@ import { Router } from '@angular/router';
 export class HomeComponent {
   constructor(
     private userInfoServie: UserinfoService,
-    private router: Router
+    private router: Router,
+    private apiService: ApiService
   ) {}
 
-  // name = this.userInfoServie.userdata.fullname || this.userInfoServie.getEmail;
-  // email = this.userInfoServie.userdata.email;
+  ngOnInit(): void {
+    // this.apiService.getUserInfo().subscribe({
+    // })
+  }
 
   name = localStorage.getItem('name');
   email = localStorage.getItem('email');
@@ -23,6 +27,6 @@ export class HomeComponent {
     localStorage.removeItem('name');
     localStorage.removeItem('email');
     localStorage.clear();
-    this.router.navigate(['login']);
+    this.router.navigate(['login'], { replaceUrl: true });
   }
 }

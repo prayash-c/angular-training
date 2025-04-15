@@ -4,7 +4,7 @@
   background-position: center;
   position: relative;
 
-  @include media-breakpoint-down(sm) {
+  @include media-breakpoint-down(md) {
     border-bottom-right-radius: 24px;
     border-bottom-left-radius: 24px;
   }
@@ -19,7 +19,7 @@
   margin: 32px;
   z-index: 0;
 
-  @include media-breakpoint-down(sm) {
+  @include media-breakpoint-down(md) {
     margin-left: 16px;
   }
 }
@@ -37,7 +37,7 @@
   left: 0;
   right: 0;
 
-  @include media-breakpoint-down(sm) {
+  @include media-breakpoint-down(md) {
     border-bottom-right-radius: 24px;
     border-bottom-left-radius: 24px;
   }

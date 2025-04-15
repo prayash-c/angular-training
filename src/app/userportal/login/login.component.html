@@ -1,62 +1,62 @@
 <div class="loading" *ngIf="loading">
   <img class="spinner" src="assets/se-loader.gif" />
 </div>
-<div class="mainframe flex-column flex-sm-row">
-  <div class="background-img d-flex col-12 col-sm-6 flex-grow-1">
+<div class="d-flex flex-column flex-md-row h-100">
+  <div class="background-img d-flex col-12 col-md-6 flex-grow-1">
     <div class="tint"></div>
-    <!-- <<div class="logo-img d-flex ms-3 mb-4"></div>> -->
     <img class="logo-img" src="assets\stayeasy-logo-edited.png" />
   </div>
-  <div class="d-flex col-12 col-sm-6 align-items-center">
-    <div class="d-flex flex-column form-padding gap-3">
-      <div class="d-grid gap-2 mb-1">
+  <div class="d-flex col-12 col-md-6 align-items-center flex-shrink-0">
+    <div class="d-flex flex-column form-padding gap-3 flex-grow-1">
+      <div class="d-grid gap-2">
         <div class="title-heading">Login to Stay Easy</div>
         <div class="helper">For seamless hospitality experience</div>
       </div>
-      <div class="col-12 col-sm-10 col-md-6">
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
-          <div class="d-grid w-100 gap-1 mb-4">
-            <label class="at-form-label" for="email">Email ID</label>
-            <input
-              name="email"
-              type="text"
-              formControlName="email"
-              class="at-textbox"
-              placeholder="Enter your email address"
-            />
-            <span
-              class="warning"
-              *ngIf="
-                (loginForm.get('email')?.dirty ||
-                  loginForm.get('email')?.touched) &&
-                !submitted
-              "
-            >
-              <ng-container
-                *ngIf="loginForm.get('email')?.errors?.['required']"
-              >
-                Email is required.
-              </ng-container>
-              <ng-container *ngIf="loginForm.get('email')?.errors?.['email']">
-                Please enter Valid Email
-              </ng-container>
-            </span>
-          </div>
-          <div
-            class=""
-            [style.cursor]="
-              loginForm.get('email')?.invalid ? 'not-allowed' : 'auto'
+
+      <form
+        class="col-12 col-md-6"
+        [formGroup]="loginForm"
+        (ngSubmit)="onSubmit()"
+        novalidate
+      >
+        <div class="d-grid gap-1 mb-4 w-100">
+          <label class="at-form-label" for="email">Email ID</label>
+          <input
+            name="email"
+            type="text"
+            formControlName="email"
+            class="at-textbox"
+            placeholder="Enter your email address"
+          />
+          <span
+            class="warning"
+            *ngIf="
+              (loginForm.get('email')?.dirty ||
+                loginForm.get('email')?.touched) &&
+              !submitted
             "
           >
-            <button
-              class="btn btn-primary at-button"
-              [disabled]="loginForm.get('email')?.invalid"
-            >
-              Get Started
-            </button>
-          </div>
-        </form>
-      </div>
+            <ng-container *ngIf="loginForm.get('email')?.errors?.['required']">
+              Email is required.
+            </ng-container>
+            <ng-container *ngIf="loginForm.get('email')?.errors?.['email']">
+              Please enter Valid Email
+            </ng-container>
+          </span>
+        </div>
+        <div
+          [style.cursor]="
+            loginForm.get('email')?.invalid ? 'not-allowed' : 'auto'
+          "
+        >
+          <button
+            class="at-button"
+            [disabled]="loginForm.get('email')?.invalid"
+          >
+            Get Started
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
