@@ -44,4 +44,32 @@ export class ApiService {
       }
     );
   }
+
+  getUserDetails() {
+    return this.http.get(
+      `https://dev-api.stayeasyonline.com/stayeasyapi/v1/user/details`
+    );
+  }
+
+  updateUserDetails(
+    aboutMe: string,
+    contact: string,
+    email: string,
+    id: string,
+    name: string,
+    profilePicUrl: string
+  ) {
+    return this.http.put(
+      `https://dev-api.stayeasyonline.com/stayeasyapi/v1/user/update`,
+      {
+        aboutMe: aboutMe,
+        contact: contact,
+        email: email,
+        id: id,
+        name: name,
+        profilePicUrl: profilePicUrl,
+      }
+    );
+  }
+  // https://dev-api.stayeasyonline.com/stayeasyapi/v1/upload
 }

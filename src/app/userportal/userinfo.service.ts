@@ -1,30 +1,37 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { userinfo } from '../api';
+import { AuthServiceService } from '../auth/auth-service.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserinfoService {
-  constructor() {}
+  constructor(
+    private authService: AuthServiceService,
+    private router: Router
+  ) {}
 
-  getEmail: string = 'john@email.com';
-  userdata: userinfo = {
-    fullname: '',
-    email: '',
-  };
+  getEmail: string = '';
 
   setEmail(email: any) {
     this.getEmail = email;
   }
 
-  emittedEmail = new Observable((signup) => {
-    signup.next(this.getEmail);
-  });
+  checkReload() {
+    const isRefreshed = sessionStorage.getItem('reload'); // session to detect page refresh
+    if (isRefreshed === 'true') {
+      this.router.navigate(['login'], { replaceUrl: true });
+    } else {
+      sessionStorage.setItem('reload', 'true');
+    }
+  }
 
-  emailExistObsv = new Observable((obs) => {
-    setTimeout(() => {
-      obs.next(true); // check api for email
-    }, 1000);
-  });
+  // canActivate(): boolean {
+  //   if (this.authService.isLoggedIn()) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
 }

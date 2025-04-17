@@ -18,11 +18,12 @@ export class OtploginComponent {
   ) {}
 
   ngOnInit(): void {
+    this.userInfoService.checkReload();
     this.resendOtp();
   }
 
   submitted = false;
-  email = localStorage.getItem('email') || this.userInfoService.getEmail;
+  email: string = this.userInfoService.getEmail;
   otp: string = '';
   otpArray = new Array(6).fill('');
   timeLeft: number = 0;
@@ -81,7 +82,6 @@ export class OtploginComponent {
 
   onSubmit() {
     this.loading = true;
-    this.getOtp();
     this.validate(this.email, this.otp);
   }
 
@@ -119,20 +119,26 @@ export class OtploginComponent {
     this.apiservice.validateOtp(email, otp).subscribe({
       next: (res: any) => {
         if (res) {
+          localStorage.setItem('refreshToken', res.body.refreshToken);
+          localStorage.setItem('accessToken', res.body.accessToken);
+          localStorage.setItem('email', email);
           this.loading = false;
+
           this.router.navigate(['home'], { replaceUrl: true });
         }
       },
       error: (err: any) => {
         this.loading = false;
-        if (err?.status == 500) {
-          if (err?.errorCode == 'APP_ERROR_1018') {
-            // not working!!
-          }
+        console.log(err);
+        if (err?.error?.errorCode == 'APP_ERROR_1018' && err?.status == 500) {
           this.incorrectOtp = true;
           console.log('Invalid Otp');
-          // console.log('Something went wrong', err);
+        } else {
+          console.log('Something went wrong', err);
         }
+        // this.incorrectOtp = true;
+        // console.log('Invalid Otp');
+        //
       },
     });
   }

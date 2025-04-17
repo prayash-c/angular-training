@@ -6,17 +6,24 @@ import { AppComponent } from './app.component';
 import { UserportalModule } from './userportal/userportal.module';
 import { ReactiveFormsModule } from '@angular/forms';
 
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './auth/auth.interceptor';
+
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     UserportalModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

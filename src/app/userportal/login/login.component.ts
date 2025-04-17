@@ -16,14 +16,16 @@ import { ApiService } from '../api.service';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-  ngOnDestory() {}
+  ngOnInit() {
+    sessionStorage.clear();
+  }
 
   submitted: boolean = false;
   loading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
-    private emailService: UserinfoService,
+    private userInfoService: UserinfoService,
     private router: Router,
     private apiservice: ApiService
   ) {}
@@ -42,17 +44,17 @@ export class LoginComponent {
         next: (res: any) => {
           this.loading = false;
           if (res) {
-            this.emailService.setEmail(email);
-            localStorage.setItem('email', email);
-            this.router.navigate(['otplogin'], { replaceUrl: true });
+            this.userInfoService.setEmail(email);
+            sessionStorage.setItem('otpSession', 'otplogin');
+            this.router.navigate(['otplogin']);
           }
         },
         error: (err) => {
           this.loading = false;
           if (err?.status == 500) {
-            this.emailService.setEmail(email);
-            localStorage.setItem('email', email);
-            this.router.navigate(['signup'], { replaceUrl: true });
+            this.userInfoService.setEmail(email);
+            sessionStorage.setItem('signupSession', 'signup');
+            this.router.navigate(['signup']);
           } else {
             console.log('Error while logging in, please try again later!');
           }

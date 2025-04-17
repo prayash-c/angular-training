@@ -20,18 +20,16 @@ export class SignupComponent {
   customercare: string = 'customercare@stayeasyonline.com';
 
   email: string = '';
+  contactNumber: string = '';
   focusOut = false;
   termsAndConditionCheck: boolean = false;
   onPopupClick: boolean = false;
   loading: boolean = false;
 
   ngOnInit(): void {
-    // this.userInfoService.emittedEmail.subscribe({
-    //   next: (res: any) => {
-    //     this.email = res;
-    //   },
-    // });
-    this.email = String(localStorage.getItem('email'));
+    this.userInfoService.checkReload();
+
+    this.email = this.userInfoService.getEmail;
     this.signupForm.patchValue({
       email: this.email,
     });
@@ -54,20 +52,27 @@ export class SignupComponent {
     this.loading = true;
     this.submitted = true;
     const fullName = String(this.signupForm.get('fullname')?.value);
-    const phone = String(this.signupForm.get('phone')?.value);
+    const phone = this.signupForm.get('phone')?.value;
     const countryCode = String(this.signupForm.get('countryCode')?.value);
     const hotelId: string = '';
-    const contactNumber = countryCode?.concat(phone);
+    if (phone) {
+      this.contactNumber = countryCode?.concat(phone);
+    }
+
     if (this.signupForm.valid) {
       this.apiService
-        .registerOtp(contactNumber, this.email, fullName, hotelId)
+        .registerOtp(this.contactNumber, this.email, fullName, hotelId)
         .subscribe({
           next: (res: any) => {
             if (res) {
               this.loading = false;
               console.log('Registration successful!');
-              localStorage.setItem('name', fullName);
-              this.router.navigate(['otplogin'], { replaceUrl: true });
+              // localStorage.setItem('name', fullName);
+              // localStorage.setItem('number', contactNumber);
+              // localStorage.setItem('email', this.email);
+              sessionStorage.clear();
+              sessionStorage.setItem('otpSession', 'otplogin');
+              this.router.navigate(['otplogin']);
             }
           },
           error: (err: any) => {
@@ -79,6 +84,11 @@ export class SignupComponent {
         });
       // this.userInfoService.userdata.fullname = name;
       // this.userInfoService.userdata.email = this.email;
+    }
+
+    if (this.signupForm.invalid) {
+      this.loading = false;
+      return;
     }
   }
 

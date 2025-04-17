@@ -10,23 +10,59 @@ import { ApiService } from '../api.service';
 })
 export class HomeComponent {
   constructor(
-    private userInfoServie: UserinfoService,
+    private userAuthService: UserinfoService,
     private router: Router,
     private apiService: ApiService
   ) {}
 
-  ngOnInit(): void {
-    // this.apiService.getUserInfo().subscribe({
-    // })
-  }
+  name: string = '';
+  email: string = '';
+  phone: string = '';
+  id: string = '';
+  profilePicUrl: string = '';
+  aboutMe: string = '';
 
-  name = localStorage.getItem('name');
-  email = localStorage.getItem('email');
+  ngOnInit(): void {
+    sessionStorage.clear();
+    this.apiService.getUserDetails().subscribe({
+      next: (res: any) => {
+        this.name = res.name;
+        this.email = res.email;
+        this.phone = res.contact;
+        console.log('user details', res);
+      },
+      error: (error: any) => {
+        console.log('error getting user details', error);
+      },
+    });
+  }
 
   logout() {
     localStorage.removeItem('name');
     localStorage.removeItem('email');
     localStorage.clear();
     this.router.navigate(['login'], { replaceUrl: true });
+  }
+
+  update() {
+    this.apiService
+      .updateUserDetails(
+        (this.aboutMe = ''),
+        this.phone,
+        this.email,
+        (this.id = ''),
+        this.name,
+        (this.profilePicUrl = '')
+      )
+      .subscribe({
+        next: (res: any) => {
+          if (res) {
+            console.log('profile updated!');
+          }
+        },
+        error: (err: any) => {
+          console.log('error', err);
+        },
+      });
   }
 }
