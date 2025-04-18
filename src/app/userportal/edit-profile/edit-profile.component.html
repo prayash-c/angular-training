@@ -1,0 +1,116 @@
+<div class="d-grid py-48px h-100">
+  <div class="d-flex align-items-center gap-2 py-3">
+    <i class="ph ph-arrow-circle-left helper" style="font-size: 24px"></i>
+    <div class="helper">Account</div>
+  </div>
+  <div class="d-flex col-12 flex-column overflow-auto">
+    <div class="title-heading mb-3">Edit Profile</div>
+    <form
+      class="d-grid gap-4"
+      [formGroup]="updateProfileForm"
+      (ngSubmit)="onSubmit()"
+    >
+      <div class="d-grid gap-1">
+        <label class="at-form-label">Name</label
+        ><input class="at-textbox w100" formControlName="fullname" />
+      </div>
+      <div class="d-grid gap-1">
+        <label class="at-form-label">Email ID</label
+        ><input
+          class="at-textbox-disabled w100"
+          type="text"
+          formControlName="email"
+        />
+      </div>
+      <div class="d-grid gap-1">
+        <label class="at-form-label w100">Phone Number</label>
+        <div class="d-flex flex-row at-textbox w100" style="padding: 0px">
+          <input
+            type="text"
+            class="country-code fixed"
+            formControlName="countryCode"
+          />
+          <input
+            type="text"
+            class="phone-box"
+            formControlName="phone"
+            maxlength="10"
+          />
+        </div>
+        <span
+          class="warning"
+          [hidden]="updateProfileForm.get('phone')?.value === null"
+          *ngIf="
+            updateProfileForm.get('phone')?.touched &&
+            updateProfileForm.get('phone')?.invalid
+          "
+        >
+          Please Enter 10-digit valid phone Number.</span
+        >
+      </div>
+      <hr class="my-0" />
+      <div class="outer-cover">
+        <div class="d-grid p-3 gap-1">
+          <label class="at-form-label">Profile Picture</label>
+          <div class="at-textbox">
+            <input
+              type="file"
+              class="at-textbox w100"
+              style="opacity: 0"
+              (change)="onProfileUpload($event)"
+            />
+          </div>
+          <label class="helper"
+            >Accepted formats .png, .jpg, Image size should be below 100kb and
+            dimesions should be close to 100*100</label
+          >
+        </div>
+      </div>
+      <hr class="my-0" />
+      <div class="flex-column">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="at-font-b1-bold">More Settings</div>
+          <i
+            *ngIf="collapse"
+            (click)="moreSettings()"
+            class="ph ph-caret-up"
+            style="font-size: 24px"
+          ></i>
+          <i
+            *ngIf="!collapse"
+            (click)="moreSettings()"
+            class="ph ph-caret-down"
+            style="font-size: 24px"
+          ></i>
+        </div>
+        <div class="mt-4">
+          <div *ngIf="!collapse" class="d-grid outer-cover gap-3">
+            <div class="at-font-b2-bold">Delete account?</div>
+            <div class="helper">
+              If you’re having any trouble with your account
+            </div>
+            <div class="d-flex gap-3">
+              <button class="at-button w100" style="height: 40px">
+                Contact Us
+              </button>
+              <button
+                class="at-button-resend w100"
+                style="height: 40px"
+                (click)="logout()"
+              >
+                Delete Account
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div>
+    <hr />
+    <button (click)="onSubmit()" class="at-button w100 mb-3">
+      Save Changes
+    </button>
+  </div>
+</div>

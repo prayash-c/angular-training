@@ -1,0 +1,50 @@
+@mixin generate-spacing-classes($sizes, $directions, $properties) {
+  @each $size in $sizes {
+    @each $direction, $directionShort in $directions {
+      @each $property, $propertyShort in $properties {
+        @if $direction == "all" {
+          .#{$propertyShort}#{$directionShort}-#{$size}px {
+            #{$property}: #{$size}px;
+          }
+        } @else if $direction == "top-bottom" {
+          .#{$propertyShort}#{$directionShort}-#{$size}px {
+            #{$property}-top: #{$size}px;
+            #{$property}-bottom: #{$size}px;
+          }
+        } @else if $direction == "left-right" {
+          .#{$propertyShort}#{$directionShort}-#{$size}px {
+            #{$property}-left: #{$size}px;
+            #{$property}-right: #{$size}px;
+          }
+        } @else {
+          .#{$propertyShort}#{$directionShort}-#{$size}px {
+            #{$property}-#{$direction}: #{$size}px;
+          }
+        }
+      }
+    }
+  }
+}
+
+// @mixin sizeList($sizearray) {
+//   @each $i in $sizearray {
+//     $pixels: $i;
+//   }
+// }
+
+$sizes: (32, 48, 56);
+$directions: (
+  all: "",
+  top: "t",
+  bottom: "b",
+  left: "s",
+  right: "e",
+  "top-bottom": "x",
+  "left-right": "y",
+);
+$properties: (
+  margin: "m",
+  padding: "p",
+);
+
+@include generate-spacing-classes($sizes, $directions, $properties);

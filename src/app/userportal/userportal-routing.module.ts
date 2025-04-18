@@ -5,6 +5,7 @@ import { SignupComponent } from './signup/signup.component';
 import { HomeComponent } from './home/home.component';
 import { OtploginComponent } from './otplogin/otplogin.component';
 import { authGuard } from '../auth/auth.guard';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 const routes: Routes = [
   {
@@ -38,6 +39,10 @@ const routes: Routes = [
     data: {
       route: 'otplogin',
     },
+  },
+  {
+    path: 'edit',
+    component: EditProfileComponent,
   },
 ];
 

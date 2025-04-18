@@ -19,7 +19,7 @@ export class OtploginComponent {
 
   ngOnInit(): void {
     this.userInfoService.checkReload();
-    this.resendOtp();
+    // this.resendOtp();
   }
 
   submitted = false;
@@ -82,6 +82,7 @@ export class OtploginComponent {
 
   onSubmit() {
     this.loading = true;
+    this.getOtp();
     this.validate(this.email, this.otp);
   }
 

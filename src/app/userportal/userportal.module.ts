@@ -8,6 +8,7 @@ import { HomeComponent } from './home/home.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { OtploginComponent } from './otplogin/otplogin.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { OtploginComponent } from './otplogin/otplogin.component';
     SignupComponent,
     HomeComponent,
     OtploginComponent,
+    EditProfileComponent,
   ],
   imports: [
     CommonModule,

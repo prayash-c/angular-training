@@ -27,6 +27,7 @@
   width: 336px; //100%
   box-shadow: 0px 1px 2px 0px #1018280d;
   transition: all 0.2s ease-in-out;
+  background-color: white;
 
   @include media-breakpoint-down(md) {
     width: 100%;
@@ -52,6 +53,10 @@
       background-color: #ebebf1;
       color: $gray-400;
     }
+
+    &.w100 {
+      width: 100%;
+    }
   }
 
   &-otp {
@@ -64,6 +69,14 @@
     font-size: 16px;
     text-align: center;
     transition: all 0.2s ease-in-out;
+
+    &.w100 {
+      width: 100%;
+    }
+  }
+
+  &.w100 {
+    width: 100%;
   }
 }
 
@@ -83,6 +96,10 @@
   background-color: $blue-600;
   color: #fff;
   transition: all 0.2s ease-in-out;
+
+  &.w100 {
+    width: 100%;
+  }
 
   &:disabled {
     border-color: $blue-200;
@@ -105,7 +122,7 @@
 
   &-resend {
     @extend .at-font-b2-bold;
-    height: 46px;
+    height: 44px;
     width: 336px; //100%
     border: 1px solid $gray-300;
     border-radius: 8px;
@@ -124,6 +141,10 @@
     &:hover {
       background-color: $gray-50;
       color: #000000;
+    }
+
+    &.w100 {
+      width: 100%;
     }
 
     @include media-breakpoint-down(md) {
@@ -147,5 +168,40 @@
     border: 1px solid $blue-500;
     background-color: $blue-50;
     border-radius: 6px;
+  }
+}
+
+.outer-cover {
+  background-color: $blue-100;
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.country-code {
+  width: 20%;
+  height: 100%;
+  text-align: center;
+  border: none;
+  border-right: 1px solid #d0d5dd;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+
+  &.fixed {
+    width: 66px;
+  }
+}
+
+.phone-box {
+  width: 80%;
+  height: 100%;
+  text-align: left;
+  padding-left: 8px;
+  border: none;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
   }
 }

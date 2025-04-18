@@ -20,6 +20,12 @@
       .at-font-#{$size}-#{$face} {
         font-size: #{$fontsize};
         font-family: #{$font-face};
+        @if $size == "b2" {
+          line-height: 24px;
+        }
+        @if $size == "b3" {
+          line-height: 21px;
+        }
       }
     }
   }

@@ -37,7 +37,7 @@ export class LoginComponent {
   onSubmit() {
     this.submitted = true;
     this.loading = true;
-    if (this.loginForm.get('email')?.valid) {
+    if (this.loginForm.valid) {
       const email = String(this.loginForm.get('email')?.value);
       // check on api
       this.apiservice.emailOtp(email).subscribe({

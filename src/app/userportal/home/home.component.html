@@ -4,34 +4,11 @@
       <h5 class="card-title mb-3">Welcome, {{ name }}!</h5>
       <h6 class="card-subtitle mb-1 text-muted">Contact Details</h6>
       <div class="card-text">{{ email }}</div>
-      <div class="card-text">{{ phone }}</div>
-      <hr color="grey" />
-      <button class="at-button" (click)="logout()">Logout</button>
+      <div class="card-text">
+        {{ phone || "Phone number not found. Please Update your phone number" }}
+      </div>
+      <hr />
+      <button class="at-button" (click)="edit()">Edit</button>
     </div>
-  </div>
-</div>
-
-<div class="d-flex justify-content-center pt-5">
-  <div class="card flex-column" style="width: auto">
-    <form class="card-body" #updateForm="ngForm" (ngSubmit)="update()">
-      <label class="at-form-label">Name: </label>
-      <input type="textbox" class="at-textbox" name="name" [(ngModel)]="name" />
-      <label class="at-form-label">Email: </label>
-      <input
-        type="textbox"
-        class="at-textbox"
-        name="email"
-        [(ngModel)]="email"
-      />
-      <label class="at-form-label">Phone: </label>
-      <input
-        type="textbox"
-        class="at-textbox"
-        name="phone"
-        [(ngModel)]="phone"
-      />
-      <hr color="grey" />
-      <button class="at-button">Update</button>
-    </form>
   </div>
 </div>

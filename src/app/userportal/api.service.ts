@@ -55,7 +55,7 @@ export class ApiService {
     aboutMe: string,
     contact: string,
     email: string,
-    id: string,
+    id: number,
     name: string,
     profilePicUrl: string
   ) {

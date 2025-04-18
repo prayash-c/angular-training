@@ -8,7 +8,10 @@ export interface emailValidate {
 }
 
 export interface userinfo {
-  fullname: any;
-  email: any;
-  phone?: any;
+  aboutMe: string;
+  contact: string;
+  email: string;
+  id: number;
+  name: string;
+  profilePicUrl?: any;
 }
