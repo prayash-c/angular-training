@@ -1,11 +1,20 @@
-<div class="d-flex justify-content-center pt-5">
+<div *ngIf="!loadingState" class="d-flex justify-content-center pt-5">
   <div class="card flex-column" style="width: auto">
     <div class="card-body">
-      <h5 class="card-title mb-3">Welcome, {{ name }}!</h5>
+      <h5 class="card-title mb-3">Welcome, {{ this.userInfo.name }}!</h5>
+      <hr />
       <h6 class="card-subtitle mb-1 text-muted">Contact Details</h6>
-      <div class="card-text">{{ email }}</div>
+      <div>
+        <img
+          *ngIf="this.userInfo.profilePicUrl !== null"
+          src="{{ this.userInfo.profilePicUrl }}"
+          width="100px"
+          height="100px"
+        />
+      </div>
+      <div class="card-text">{{ this.userInfo.email }}</div>
       <div class="card-text">
-        {{ phone || "Phone number not found. Please Update your phone number" }}
+        {{ this.userInfo.contact }}
       </div>
       <hr />
       <button class="at-button" (click)="edit()">Edit</button>

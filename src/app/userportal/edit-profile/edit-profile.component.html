@@ -1,7 +1,9 @@
-<div class="d-grid py-48px h-100">
-  <div class="d-flex align-items-center gap-2 py-3">
-    <i class="ph ph-arrow-circle-left helper" style="font-size: 24px"></i>
-    <div class="helper">Account</div>
+<div class="d-grid update-page">
+  <div class="d-flex py-3">
+    <div class="d-flex align-items-center gap-2" (click)="navigateHome()">
+      <i class="ph ph-arrow-circle-left helper" style="font-size: 20px"></i>
+      <div class="helper">Account</div>
+    </div>
   </div>
   <div class="d-flex col-12 flex-column overflow-auto">
     <div class="title-heading mb-3">Edit Profile</div>
@@ -52,18 +54,39 @@
       <div class="outer-cover">
         <div class="d-grid p-3 gap-1">
           <label class="at-form-label">Profile Picture</label>
-          <div class="at-textbox">
+          <div
+            class="d-flex at-textbox w100 py-0 px-0 align-items-center justify-content-between"
+            style="position: relative"
+          >
+            <span class="ms-14px">{{ picFilename }}</span>
             <input
               type="file"
-              class="at-textbox w100"
-              style="opacity: 0"
+              class="w-100 h-100"
+              style="opacity: 0; position: absolute"
               (change)="onProfileUpload($event)"
+              [style.cursor]="'pointer'"
             />
+            <div class="me-14px">
+              <i
+                *ngIf="checkIcon"
+                class="ph ph-check-circle me-2"
+                style="font-size: 20px; color: #039855"
+              ></i>
+              <i class="ph ph-file-arrow-up" style="font-size: 20px"></i>
+            </div>
           </div>
-          <label class="helper"
+          <label
+            [ngClass]="{ helper: change === 1, 'warning bold': change === 2 }"
             >Accepted formats .png, .jpg, Image size should be below 100kb and
             dimesions should be close to 100*100</label
           >
+          <div *ngIf="this.userInfo.profilePicUrl !== ''">
+            <img
+              src="{{ this.userInfo.profilePicUrl }}"
+              height="100px"
+              width="100px"
+            />
+          </div>
         </div>
       </div>
       <hr class="my-0" />

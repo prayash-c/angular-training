@@ -1,0 +1,11 @@
+.update-page {
+  padding: 0px 48px;
+  height: 100%;
+
+  @include media-breakpoint-down(md) {
+    padding: 0px 32px;
+  }
+  @include media-breakpoint-down(sm) {
+    padding: 0px 16px;
+  }
+}

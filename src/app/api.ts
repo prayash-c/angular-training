@@ -13,5 +13,5 @@ export interface userinfo {
   email: string;
   id: number;
   name: string;
-  profilePicUrl?: any;
+  profilePicUrl: string | null;
 }

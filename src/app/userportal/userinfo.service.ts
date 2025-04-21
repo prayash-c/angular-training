@@ -1,6 +1,4 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { userinfo } from '../api';
+import { Injectable, OnInit } from '@angular/core';
 import { AuthServiceService } from '../auth/auth-service.service';
 import { Router } from '@angular/router';
 
@@ -27,11 +25,4 @@ export class UserinfoService {
       sessionStorage.setItem('reload', 'true');
     }
   }
-
-  // canActivate(): boolean {
-  //   if (this.authService.isLoggedIn()) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
 }

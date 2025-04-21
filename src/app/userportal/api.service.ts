@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 
 import { emailValidate } from '../api';
 import { HttpClient } from '@angular/common/http';
+import { Binary } from '@angular/compiler';
+import { Form } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root',
@@ -71,5 +73,20 @@ export class ApiService {
       }
     );
   }
+
+  uploadFile(file: FormData) {
+    return this.http.post(
+      `https://dev-api.stayeasyonline.com/stayeasyapi/v1/upload`,
+      file
+    );
+  }
+
+  refreshToken(refreshToken: string) {
+    return this.http.post(
+      `https://dev-api.stayeasyonline.com/stayeasyapi/v1/auth/refreshtoken`,
+      { refreshToken: refreshToken }
+    );
+  }
   // https://dev-api.stayeasyonline.com/stayeasyapi/v1/upload
+  // https://dev-api.stayeasyonline.com/stayeasyapi/v1/auth/refreshtoken
 }

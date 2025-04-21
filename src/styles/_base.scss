@@ -12,6 +12,10 @@ body {
 .warning {
   color: #f97066;
   @extend .at-font-b3-reg;
+
+  &.bold {
+    @extend .at-font-b3-med;
+  }
 }
 
 .global-text {

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from '../api.service';
 import { userinfo } from 'src/app/api';
 import { Route, Router } from '@angular/router';
+import { Binary } from '@angular/compiler';
 
 @Component({
   selector: 'app-edit-profile',
@@ -11,6 +12,7 @@ import { Route, Router } from '@angular/router';
 })
 export class EditProfileComponent implements OnInit {
   updateProfileForm: FormGroup;
+
   constructor(
     private fb: FormBuilder,
     private apiService: ApiService,
@@ -24,7 +26,6 @@ export class EditProfileComponent implements OnInit {
       email: [{ value: '', disabled: true }],
       countryCode: [{ value: '+91', disabled: true }],
       phone: ['', [Validators.pattern(/^([7-9][0-9]{9})$/)]],
-      profilePicUrl: [''],
     });
   }
 
@@ -38,6 +39,12 @@ export class EditProfileComponent implements OnInit {
   };
 
   collapse: boolean = true;
+  change: number = 1;
+  checkIcon: boolean = false;
+  picFilename: string = '';
+  picFileSize: number = 0;
+  picFileDim: string = '';
+  picFileType: string = '';
 
   ngOnInit(): void {
     this.updateProfileForm.patchValue({
@@ -46,10 +53,42 @@ export class EditProfileComponent implements OnInit {
       phone: sessionStorage.getItem('phone')?.replace('+91', ''),
     });
     this.userInfo.id = Number(sessionStorage.getItem('id'));
+    this.userInfo.profilePicUrl = sessionStorage.getItem('profilePicUrl');
   }
 
   onProfileUpload(event: any) {
-    console.log(event.target.files);
+    console.log(event.target.files, event.target.files[0]);
+    if (event.target.files[0]) {
+      const formData = new FormData();
+      formData.append('file', event.target.files[0]);
+
+      if (
+        formData &&
+        event.target.files[0].size < 20000 &&
+        (event.target.files[0].type === 'image/jpeg' || 'image/png')
+      ) {
+        this.apiService.uploadFile(formData).subscribe({
+          next: (res: any) => {
+            this.userInfo.profilePicUrl = res.url;
+          },
+          error: (err: any) => {
+            console.log('error uploading file', err);
+          },
+        });
+
+        this.picFilename = event.target.files[0].name.replace('.', '');
+        this.picFileSize = event.target.files[0].size; // should be < 20000
+        this.picFileType = event.target.files[0].type; // image/jpeg or image/png
+        this.change = 1;
+        this.checkIcon = true;
+      } else {
+        this.picFilename = '';
+        this.picFileSize = 0;
+        this.picFileType = '';
+        this.change = 2;
+        this.checkIcon = false;
+      }
+    }
   }
 
   onSubmit() {
@@ -62,6 +101,8 @@ export class EditProfileComponent implements OnInit {
     if (phone) {
       this.userInfo.contact = countryCode?.concat(phone);
     }
+    // this.userInfo.profilePicUrl = this.profilePic;
+
     this.apiService
       .updateUserDetails(
         this.userInfo.aboutMe,
@@ -69,13 +110,12 @@ export class EditProfileComponent implements OnInit {
         this.userInfo.email,
         this.userInfo.id,
         this.userInfo.name,
-        this.userInfo.profilePicUrl
+        String(this.userInfo.profilePicUrl)
       )
       .subscribe({
         next: (res: any) => {
           if (res) {
             console.log('profile updated!');
-            this.router.navigate(['home']);
           }
         },
         error: (err: any) => {
@@ -88,6 +128,10 @@ export class EditProfileComponent implements OnInit {
 
   moreSettings() {
     this.collapse = !this.collapse;
+  }
+
+  navigateHome() {
+    this.router.navigate(['home']);
   }
 
   logout() {

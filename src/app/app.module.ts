@@ -8,14 +8,19 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './auth/auth.interceptor';
+import { LoaderComponent } from './loader/loader.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, LoaderComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     UserportalModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
+    ToastrModule,
   ],
   providers: [
     {

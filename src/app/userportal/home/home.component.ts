@@ -3,6 +3,7 @@ import { UserinfoService } from '../userinfo.service';
 import { Router } from '@angular/router';
 import { ApiService } from '../api.service';
 import { userinfo } from 'src/app/api';
+import { LoaderService } from 'src/app/loader/loader.service';
 
 @Component({
   selector: 'app-home',
@@ -11,10 +12,12 @@ import { userinfo } from 'src/app/api';
 })
 export class HomeComponent implements OnInit {
   constructor(
-    private userAuthService: UserinfoService,
     private router: Router,
-    private apiService: ApiService
+    private apiService: ApiService,
+    public loader: LoaderService
   ) {}
+
+  loadingState: boolean = true;
 
   userInfo: userinfo = {
     aboutMe: '',
@@ -22,29 +25,39 @@ export class HomeComponent implements OnInit {
     email: '',
     id: 0,
     name: '',
-    profilePicUrl: '',
+    profilePicUrl: null,
   };
-
-  name = '';
-  email = '';
-  phone = '';
 
   ngOnInit(): void {
     sessionStorage.clear();
+    this.loader.loadingEvent.subscribe({
+      next: (res: boolean) => {
+        this.loadingState = res;
+      },
+    });
+    this.fetchUserDetails();
+  }
+
+  fetchUserDetails() {
+    this.loader.setLoadingState(true);
+
     this.apiService.getUserDetails().subscribe({
       next: (res: any) => {
         this.userInfo.id = res.id;
         this.userInfo.name = res.name;
         this.userInfo.email = res.email;
         this.userInfo.contact = res.contact;
+        this.userInfo.profilePicUrl = res.profilePictureUrl;
+
         console.log('user details', res);
 
-        this.name = this.userInfo.name;
-        this.email = this.userInfo.email;
-        this.phone = this.userInfo.contact;
+        this.loader.setLoadingState(false);
       },
-      error: (error: any) => {
-        console.log('error getting user details', error);
+      error: (err: any) => {
+        if (err.status === 401) {
+          console.log('Token Expired!');
+        }
+        console.log('error getting user details', err);
       },
     });
   }
@@ -55,6 +68,7 @@ export class HomeComponent implements OnInit {
     sessionStorage.setItem('email', this.userInfo.email);
     sessionStorage.setItem('phone', this.userInfo.contact);
     sessionStorage.setItem('id', String(this.userInfo.id));
+    sessionStorage.setItem('profilePicUrl', this.userInfo.profilePicUrl ?? '');
     this.router.navigate(['edit']);
   }
 }
