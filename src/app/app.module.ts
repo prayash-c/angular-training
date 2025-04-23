@@ -11,6 +11,7 @@ import { AuthInterceptor } from './auth/auth.interceptor';
 import { LoaderComponent } from './loader/loader.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { ErrorInterceptor } from './error/error.interceptor';
 
 @NgModule({
   declarations: [AppComponent, LoaderComponent],
@@ -20,12 +21,17 @@ import { ToastrModule } from 'ngx-toastr';
     UserportalModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    ToastrModule,
+    ToastrModule.forRoot(),
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
       multi: true,
     },
   ],

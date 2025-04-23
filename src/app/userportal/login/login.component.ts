@@ -9,6 +9,7 @@ import { UserinfoService } from '../userinfo.service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ApiService } from '../api.service';
+import { LoaderService } from 'src/app/loader/loader.service';
 
 @Component({
   selector: 'app-login',
@@ -21,13 +22,13 @@ export class LoginComponent {
   }
 
   submitted: boolean = false;
-  loading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private userInfoService: UserinfoService,
     private router: Router,
-    private apiservice: ApiService
+    private apiservice: ApiService,
+    private loaderService: LoaderService
   ) {}
 
   loginForm = this.fb.group({
@@ -36,13 +37,13 @@ export class LoginComponent {
 
   onSubmit() {
     this.submitted = true;
-    this.loading = true;
+    this.loaderService.setLoadingState(true);
     if (this.loginForm.valid) {
       const email = String(this.loginForm.get('email')?.value);
       // check on api
       this.apiservice.emailOtp(email).subscribe({
         next: (res: any) => {
-          this.loading = false;
+          this.loaderService.setLoadingState(false);
           if (res) {
             this.userInfoService.setEmail(email);
             sessionStorage.setItem('otpSession', 'otplogin');
@@ -50,7 +51,7 @@ export class LoginComponent {
           }
         },
         error: (err) => {
-          this.loading = false;
+          this.loaderService.setLoadingState(false);
           if (err?.status == 500) {
             this.userInfoService.setEmail(email);
             sessionStorage.setItem('signupSession', 'signup');

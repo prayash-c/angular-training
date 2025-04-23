@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { ApiService } from '../api.service';
 import { userinfo } from 'src/app/api';
 import { LoaderService } from 'src/app/loader/loader.service';
+import { ToastrService } from 'ngx-toastr';
+import { CommonToastr } from 'src/app/toastr/common.toastr';
 
 @Component({
   selector: 'app-home',
@@ -14,10 +16,19 @@ export class HomeComponent implements OnInit {
   constructor(
     private router: Router,
     private apiService: ApiService,
-    public loader: LoaderService
+    public loaderService: LoaderService,
+    private commonToastr: CommonToastr
   ) {}
 
   loadingState: boolean = true;
+
+  getLoading() {
+    this.loaderService.loadingEvent.subscribe({
+      next: (res: boolean) => {
+        this.loadingState = res;
+      },
+    });
+  }
 
   userInfo: userinfo = {
     aboutMe: '',
@@ -30,16 +41,16 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     sessionStorage.clear();
-    this.loader.loadingEvent.subscribe({
-      next: (res: boolean) => {
-        this.loadingState = res;
-      },
-    });
+    this.commonToastr.toastrSuccess('logged in successfully!');
     this.fetchUserDetails();
+    this.fetchUserDetails();
+    this.fetchUserDetails();
+    this.fetchUserDetails();
+    this.getLoading();
   }
 
   fetchUserDetails() {
-    this.loader.setLoadingState(true);
+    this.loaderService.setLoadingState(true);
 
     this.apiService.getUserDetails().subscribe({
       next: (res: any) => {
@@ -49,11 +60,10 @@ export class HomeComponent implements OnInit {
         this.userInfo.contact = res.contact;
         this.userInfo.profilePicUrl = res.profilePictureUrl;
 
-        console.log('user details', res);
-
-        this.loader.setLoadingState(false);
+        this.loaderService.setLoadingState(false);
       },
       error: (err: any) => {
+        this.loaderService.setLoadingState(false);
         if (err.status === 401) {
           console.log('Token Expired!');
         }
@@ -63,12 +73,6 @@ export class HomeComponent implements OnInit {
   }
 
   edit() {
-    sessionStorage.clear();
-    sessionStorage.setItem('name', this.userInfo.name);
-    sessionStorage.setItem('email', this.userInfo.email);
-    sessionStorage.setItem('phone', this.userInfo.contact);
-    sessionStorage.setItem('id', String(this.userInfo.id));
-    sessionStorage.setItem('profilePicUrl', this.userInfo.profilePicUrl ?? '');
     this.router.navigate(['edit']);
   }
 }

@@ -3,7 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from '../api.service';
 import { userinfo } from 'src/app/api';
 import { Route, Router } from '@angular/router';
-import { Binary } from '@angular/compiler';
+import { LoaderService } from 'src/app/loader/loader.service';
+import { ToastrService } from 'ngx-toastr';
+import { CommonToastr } from 'src/app/toastr/common.toastr';
+import { UserinfoService } from '../userinfo.service';
 
 @Component({
   selector: 'app-edit-profile',
@@ -16,7 +19,9 @@ export class EditProfileComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private apiService: ApiService,
-    private router: Router
+    private router: Router,
+    private loaderService: LoaderService,
+    private commonToastr: CommonToastr
   ) {
     this.updateProfileForm = this.fb.group({
       fullname: [
@@ -38,6 +43,16 @@ export class EditProfileComponent implements OnInit {
     profilePicUrl: '',
   };
 
+  // loadingState: boolean = true;
+
+  // getLoading() {
+  //   this.loaderService.loadingEvent.subscribe({
+  //     next: (res: boolean) => {
+  //       this.loadingState = res;
+  //     },
+  //   });
+  // }
+
   collapse: boolean = true;
   change: number = 1;
   checkIcon: boolean = false;
@@ -47,13 +62,32 @@ export class EditProfileComponent implements OnInit {
   picFileType: string = '';
 
   ngOnInit(): void {
-    this.updateProfileForm.patchValue({
-      fullname: sessionStorage.getItem('name'),
-      email: sessionStorage.getItem('email'),
-      phone: sessionStorage.getItem('phone')?.replace('+91', ''),
+    this.fetchUserDetails();
+  }
+
+  fetchUserDetails() {
+    this.loaderService.setLoadingState(true);
+
+    this.apiService.getUserDetails().subscribe({
+      next: (res: any) => {
+        this.userInfo.id = res.id;
+        this.userInfo.profilePicUrl = res.profilePictureUrl;
+        this.updateProfileForm.patchValue({
+          fullname: res.name,
+          email: res.email,
+          phone: res.contact?.replace('+91', ''),
+        });
+
+        this.loaderService.setLoadingState(false);
+      },
+      error: (err: any) => {
+        this.loaderService.setLoadingState(false);
+        if (err.status === 401) {
+          console.log('Token Expired!');
+        }
+        console.log('error getting user details', err);
+      },
     });
-    this.userInfo.id = Number(sessionStorage.getItem('id'));
-    this.userInfo.profilePicUrl = sessionStorage.getItem('profilePicUrl');
   }
 
   onProfileUpload(event: any) {
@@ -62,36 +96,71 @@ export class EditProfileComponent implements OnInit {
       const formData = new FormData();
       formData.append('file', event.target.files[0]);
 
-      if (
-        formData &&
-        event.target.files[0].size < 20000 &&
-        (event.target.files[0].type === 'image/jpeg' || 'image/png')
-      ) {
-        this.apiService.uploadFile(formData).subscribe({
-          next: (res: any) => {
-            this.userInfo.profilePicUrl = res.url;
-          },
-          error: (err: any) => {
-            console.log('error uploading file', err);
-          },
-        });
+      this.checkImgDimension(event.target.files[0]).then((ImgDimOk) => {
+        if (
+          ImgDimOk &&
+          formData &&
+          event.target.files[0].size < 20000 &&
+          (event.target.files[0].type === 'image/jpeg' || 'image/png')
+        ) {
+          this.apiService.uploadFile(formData).subscribe({
+            next: (res: any) => {
+              this.userInfo.profilePicUrl = res.url;
+            },
+            error: (err: any) => {
+              console.log('error uploading file', err);
+            },
+          });
 
-        this.picFilename = event.target.files[0].name.replace('.', '');
-        this.picFileSize = event.target.files[0].size; // should be < 20000
-        this.picFileType = event.target.files[0].type; // image/jpeg or image/png
-        this.change = 1;
-        this.checkIcon = true;
-      } else {
-        this.picFilename = '';
-        this.picFileSize = 0;
-        this.picFileType = '';
-        this.change = 2;
-        this.checkIcon = false;
-      }
+          this.picFilename = event.target.files[0].name.replace('.', '');
+          this.picFileSize = event.target.files[0].size; // should be < 20000
+          this.picFileType = event.target.files[0].type; // image/jpeg or image/png
+          this.change = 1;
+          this.checkIcon = true;
+        } else {
+          if (!ImgDimOk) {
+            this.commonToastr.toastrError('Invalid Image Dimensions');
+          } else if (event.target.files[0].size > 20000) {
+            this.commonToastr.toastrError('Image size is too large');
+          } else {
+            this.commonToastr.toastrError('Invalid Image Format');
+          }
+          this.picFilename = '';
+          this.picFileSize = 0;
+          this.picFileType = '';
+          this.change = 2;
+          this.checkIcon = false;
+        }
+      });
     }
   }
 
+  checkImgDimension(file: File): Promise<boolean> {
+    return new Promise((resolve) => {
+      const img = new Image();
+      const reader = new FileReader();
+
+      reader.onload = (e: any) => {
+        img.src = e.target.result;
+
+        img.onload = () => {
+          const width = img.width;
+          const height = img.height;
+
+          if (width <= 100 && height <= 100) {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        };
+      };
+
+      reader.readAsDataURL(file);
+    });
+  }
+
   onSubmit() {
+    this.loaderService.setLoadingState(true);
     this.userInfo.name = String(this.updateProfileForm.get('fullname')?.value);
     this.userInfo.email = String(this.updateProfileForm.get('email')?.value);
     const phone = this.updateProfileForm.get('phone')?.value;
@@ -101,7 +170,6 @@ export class EditProfileComponent implements OnInit {
     if (phone) {
       this.userInfo.contact = countryCode?.concat(phone);
     }
-    // this.userInfo.profilePicUrl = this.profilePic;
 
     this.apiService
       .updateUserDetails(
@@ -110,18 +178,23 @@ export class EditProfileComponent implements OnInit {
         this.userInfo.email,
         this.userInfo.id,
         this.userInfo.name,
-        String(this.userInfo.profilePicUrl)
+        this.userInfo.profilePicUrl
       )
       .subscribe({
         next: (res: any) => {
           if (res) {
+            this.loaderService.setLoadingState(false);
+            this.commonToastr.toastrSuccess('User updated successfully');
+            this.fetchUserDetails();
             console.log('profile updated!');
           }
         },
         error: (err: any) => {
+          this.loaderService.setLoadingState(false);
+          this.commonToastr.toastrError('Update Failed!');
           console.log('update failed!');
           console.log('error', err);
-          this.router.navigate(['home']);
+          this.navigateHome();
         },
       });
   }

@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { UserinfoService } from '../userinfo.service';
 import { Router } from '@angular/router';
 import { ApiService } from '../api.service';
+import { LoaderService } from 'src/app/loader/loader.service';
 
 @Component({
   selector: 'app-otplogin',
@@ -14,7 +15,8 @@ export class OtploginComponent {
     private fb: FormBuilder,
     private userInfoService: UserinfoService,
     private router: Router,
-    private apiservice: ApiService
+    private apiservice: ApiService,
+    private loaderService: LoaderService
   ) {}
 
   ngOnInit(): void {
@@ -29,7 +31,6 @@ export class OtploginComponent {
   timeLeft: number = 0;
   interval: any = null;
   incorrectOtp: boolean = false;
-  loading: boolean = false;
 
   otpForm = this.fb.group({
     otp: this.fb.array(
@@ -81,7 +82,7 @@ export class OtploginComponent {
   }
 
   onSubmit() {
-    this.loading = true;
+    this.loaderService.setLoadingState(true);
     this.getOtp();
     this.validate(this.email, this.otp);
   }
@@ -123,13 +124,13 @@ export class OtploginComponent {
           localStorage.setItem('refreshToken', res.body.refreshToken);
           localStorage.setItem('accessToken', res.body.accessToken);
           localStorage.setItem('email', email);
-          this.loading = false;
+          this.loaderService.setLoadingState(false);
 
           this.router.navigate(['home'], { replaceUrl: true });
         }
       },
       error: (err: any) => {
-        this.loading = false;
+        this.loaderService.setLoadingState(false);
         console.log(err);
         if (err?.error?.errorCode == 'APP_ERROR_1018' && err?.status == 500) {
           this.incorrectOtp = true;

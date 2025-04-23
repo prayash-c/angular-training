@@ -4,6 +4,7 @@ import { emailValidate } from '../api';
 import { HttpClient } from '@angular/common/http';
 import { Binary } from '@angular/compiler';
 import { Form } from '@angular/forms';
+import { throttleTime } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -59,7 +60,7 @@ export class ApiService {
     email: string,
     id: number,
     name: string,
-    profilePicUrl: string
+    profilePicUrl: string | null
   ) {
     return this.http.put(
       `https://dev-api.stayeasyonline.com/stayeasyapi/v1/user/update`,

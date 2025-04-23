@@ -1,12 +1,15 @@
 <div *ngIf="!loadingState" class="d-flex justify-content-center pt-5">
   <div class="card flex-column" style="width: auto">
     <div class="card-body">
-      <h5 class="card-title mb-3">Welcome, {{ this.userInfo.name }}!</h5>
+      <h5 class="card-title mb-3">
+        Welcome, <strong>{{ this.userInfo.name }}</strong
+        >!
+      </h5>
       <hr />
-      <h6 class="card-subtitle mb-1 text-muted">Contact Details</h6>
+      <h6 class="card-subtitle mb-1 text-muted">Your Account</h6>
       <div>
         <img
-          *ngIf="this.userInfo.profilePicUrl !== null"
+          *ngIf="this.userInfo.profilePicUrl"
           src="{{ this.userInfo.profilePicUrl }}"
           width="100px"
           height="100px"

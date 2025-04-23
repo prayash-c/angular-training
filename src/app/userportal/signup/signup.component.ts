@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UserinfoService } from '../userinfo.service';
-import { Router } from '@angular/router';
+import { LoadChildren, Router } from '@angular/router';
 import { ApiService } from '../api.service';
+import { LoaderService } from 'src/app/loader/loader.service';
 
 @Component({
   selector: 'app-signup',
@@ -14,7 +15,8 @@ export class SignupComponent {
     private fb: FormBuilder,
     private userInfoService: UserinfoService,
     private router: Router,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private loaderService: LoaderService
   ) {}
 
   customercare: string = 'customercare@stayeasyonline.com';
@@ -24,7 +26,6 @@ export class SignupComponent {
   focusOut = false;
   termsAndConditionCheck: boolean = false;
   onPopupClick: boolean = false;
-  loading: boolean = false;
 
   ngOnInit(): void {
     this.userInfoService.checkReload();
@@ -49,7 +50,7 @@ export class SignupComponent {
   });
 
   onSubmit() {
-    this.loading = true;
+    this.loaderService.setLoadingState(true);
     this.submitted = true;
     const fullName = String(this.signupForm.get('fullname')?.value);
     const phone = this.signupForm.get('phone')?.value;
@@ -65,7 +66,7 @@ export class SignupComponent {
         .subscribe({
           next: (res: any) => {
             if (res) {
-              this.loading = false;
+              this.loaderService.setLoadingState(false);
               console.log('Registration successful!');
               // localStorage.setItem('name', fullName);
               // localStorage.setItem('number', contactNumber);
@@ -77,7 +78,7 @@ export class SignupComponent {
           },
           error: (err: any) => {
             if (err?.status == 500) {
-              this.loading = false;
+              this.loaderService.setLoadingState(false);
               console.log('error occures', err);
             }
           },
@@ -87,7 +88,7 @@ export class SignupComponent {
     }
 
     if (this.signupForm.invalid) {
-      this.loading = false;
+      this.loaderService.setLoadingState(false);
       return;
     }
   }

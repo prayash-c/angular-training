@@ -65,6 +65,7 @@
               style="opacity: 0; position: absolute"
               (change)="onProfileUpload($event)"
               [style.cursor]="'pointer'"
+              accept="image/png, image/jpeg"
             />
             <div class="me-14px">
               <i
@@ -80,7 +81,7 @@
             >Accepted formats .png, .jpg, Image size should be below 100kb and
             dimesions should be close to 100*100</label
           >
-          <div *ngIf="this.userInfo.profilePicUrl !== ''">
+          <div *ngIf="this.userInfo.profilePicUrl">
             <img
               src="{{ this.userInfo.profilePicUrl }}"
               height="100px"

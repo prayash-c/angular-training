@@ -6,10 +6,7 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class UserinfoService {
-  constructor(
-    private authService: AuthServiceService,
-    private router: Router
-  ) {}
+  constructor(private router: Router) {}
 
   getEmail: string = '';
 
