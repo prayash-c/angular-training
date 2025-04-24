@@ -43,6 +43,10 @@ const routes: Routes = [
   {
     path: 'edit',
     component: EditProfileComponent,
+    canActivate: [authGuard],
+    data: {
+      route: 'edit',
+    },
   },
 ];
 

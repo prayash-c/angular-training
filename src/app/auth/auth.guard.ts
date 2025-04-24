@@ -11,18 +11,26 @@ export const authGuard: CanActivateFn = (route, state) => {
     sessionStorage.getItem('otpSession') ||
     sessionStorage.getItem('signupSession');
 
+  // let updateSession = sessionStorage.getItem('session');
+
   if (token) {
     if (expectedRoute === 'home') {
       return true;
+    }
+    if (expectedRoute === 'edit') {
+      return true;
+      // if (expectedRoute === updateSession) {
+      //   return true;
+      // } else {
+      //   router.navigate(['home'], { replaceUrl: true });
+      //   return false;
+      // }
     }
     router.navigate(['home'], { replaceUrl: true });
     return false;
   } else {
     if (expectedRoute === 'login') {
       return true;
-    } else if (expectedRoute === 'home') {
-      router.navigate(['login']);
-      return false;
     } else if (expectedRoute !== checkSession) {
       router.navigate(['login']);
       return false;

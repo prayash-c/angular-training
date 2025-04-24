@@ -1,4 +1,4 @@
-<div class="d-grid update-page">
+<div *ngIf="!loadingState" class="d-grid update-page">
   <div class="d-flex py-3">
     <div class="d-flex align-items-center gap-2" (click)="navigateHome()">
       <i class="ph ph-arrow-circle-left helper" style="font-size: 20px"></i>
@@ -13,8 +13,27 @@
       (ngSubmit)="onSubmit()"
     >
       <div class="d-grid gap-1">
-        <label class="at-form-label">Name</label
-        ><input class="at-textbox w100" formControlName="fullname" />
+        <label class="at-form-label">Name</label>
+        <div class="d-flex">
+          <input
+            class="at-textbox w100"
+            [class.invalid]="updateProfileForm.get('fullname')?.invalid"
+            formControlName="fullname"
+          />
+          <!-- <i
+            class="ph ph-warning-circle"
+            style="font-size: 16px; color: #fda29b"
+          ></i> -->
+        </div>
+        <span
+          class="warning"
+          *ngIf="
+            updateProfileForm.get('fullname')?.touched &&
+            updateProfileForm.get('fullname')?.invalid
+          "
+        >
+          Full Name is required.</span
+        >
       </div>
       <div class="d-grid gap-1">
         <label class="at-form-label">Email ID</label
@@ -26,7 +45,11 @@
       </div>
       <div class="d-grid gap-1">
         <label class="at-form-label w100">Phone Number</label>
-        <div class="d-flex flex-row at-textbox w100" style="padding: 0px">
+        <div
+          class="d-flex flex-row at-textbox w100"
+          [class.invalid]="updateProfileForm.get('phone')?.invalid"
+          style="padding: 0px"
+        >
           <input
             type="text"
             class="country-code fixed"
@@ -133,8 +156,14 @@
 
   <div>
     <hr />
-    <button (click)="onSubmit()" class="at-button w100 mb-3">
-      Save Changes
-    </button>
+    <div [style.cursor]="updateProfileForm.invalid ? 'not-allowed' : 'auto'">
+      <button
+        [disabled]="updateProfileForm.invalid"
+        (click)="onSubmit()"
+        class="at-button w100 mb-3"
+      >
+        Save Changes
+      </button>
+    </div>
   </div>
 </div>

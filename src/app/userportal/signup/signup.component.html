@@ -262,13 +262,10 @@
           >
         </div>
 
-        <div class="">
+        <div [style.cursor]="signupForm.invalid ? 'not-allowed' : 'auto'">
           <button
             class="btn btn-primary at-button"
-            [disabled]="
-              signupForm.get('phone')?.invalid ||
-              signupForm.get('fullname')?.invalid
-            "
+            [disabled]="signupForm.invalid"
           >
             Get Started
           </button>

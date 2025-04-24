@@ -43,16 +43,17 @@ export class EditProfileComponent implements OnInit {
     profilePicUrl: '',
   };
 
-  // loadingState: boolean = true;
+  loadingState: boolean = true;
 
-  // getLoading() {
-  //   this.loaderService.loadingEvent.subscribe({
-  //     next: (res: boolean) => {
-  //       this.loadingState = res;
-  //     },
-  //   });
-  // }
+  getLoading() {
+    this.loaderService.loadingEvent.subscribe({
+      next: (res: boolean) => {
+        this.loadingState = res;
+      },
+    });
+  }
 
+  submitted: boolean = false;
   collapse: boolean = true;
   change: number = 1;
   checkIcon: boolean = false;
@@ -63,6 +64,7 @@ export class EditProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchUserDetails();
+    this.getLoading();
   }
 
   fetchUserDetails() {
@@ -77,7 +79,7 @@ export class EditProfileComponent implements OnInit {
           email: res.email,
           phone: res.contact?.replace('+91', ''),
         });
-
+        this.getImgName(String(res.profilePictureUrl));
         this.loaderService.setLoadingState(false);
       },
       error: (err: any) => {
@@ -112,7 +114,7 @@ export class EditProfileComponent implements OnInit {
             },
           });
 
-          this.picFilename = event.target.files[0].name.replace('.', '');
+          // this.picFilename = event.target.files[0].name.replace('.', '');
           this.picFileSize = event.target.files[0].size; // should be < 20000
           this.picFileType = event.target.files[0].type; // image/jpeg or image/png
           this.change = 1;
@@ -160,6 +162,7 @@ export class EditProfileComponent implements OnInit {
   }
 
   onSubmit() {
+    this.submitted = true;
     this.loaderService.setLoadingState(true);
     this.userInfo.name = String(this.updateProfileForm.get('fullname')?.value);
     this.userInfo.email = String(this.updateProfileForm.get('email')?.value);
@@ -205,6 +208,10 @@ export class EditProfileComponent implements OnInit {
 
   navigateHome() {
     this.router.navigate(['home']);
+  }
+
+  getImgName(url: string) {
+    this.picFilename = url.substring(url.lastIndexOf('/') + 1).replace('.', '');
   }
 
   logout() {

@@ -39,6 +39,7 @@
 
   &:focus {
     outline: none;
+    box-shadow: none;
   }
 
   &:hover {
@@ -72,6 +73,13 @@
 
     &.w100 {
       width: 100%;
+    }
+  }
+
+  &.invalid {
+    border-color: $error-300;
+    &:hover {
+      box-shadow: none;
     }
   }
 
