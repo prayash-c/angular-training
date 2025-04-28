@@ -1,0 +1,112 @@
+<div class="d-flex flex-column common-pg-layout">
+  <div class="d-flex py-3">
+    <div class="d-flex align-items-center gap-2" (click)="navigate()">
+      <i class="ph ph-arrow-circle-left helper" style="font-size: 20px"></i>
+      <div class="helper">Meeting Room</div>
+    </div>
+  </div>
+  <form
+    [formGroup]="meetingForm"
+    (ngSubmit)="onSubmit()"
+    class="d-flex col-12 flex-column gap-4"
+  >
+    <div class="title-heading mb-1">Enter Your Meeting Details</div>
+    <div class="d-flex flex-column">
+      <label class="at-form-label mb-6px"
+        >When would you like your service?</label
+      >
+    </div>
+    <div class="d-flex flex-column">
+      <label class="at-form-label mb-6px" for="people">How many people?</label>
+      <input
+        name="people"
+        type="text"
+        formControlName="noOfPeople"
+        class="at-textbox mb-6px"
+        placeholder="Enter the no of people"
+      />
+      <label class="helper reg">Maximum room size = {{ 40 }}</label>
+    </div>
+    <div class="d-flex flex-column">
+      <label class="at-form-label mb-6px" for="hours">How many hours?</label>
+      <input
+        name="hours"
+        type="text"
+        formControlName="noOfHours"
+        class="at-textbox mb-6px"
+        placeholder="Enter the no of hours"
+      />
+    </div>
+    <div class="d-flex flex-column">
+      <label class="at-form-label mb-6px" for="time">Expected Start Time</label>
+      <div
+        class="at-textbox mb-6px d-flex justify-content-between"
+        (click)="selectTimeOption()"
+      >
+        <div>{{ selectedTime }}</div>
+        <i class="ph ph-caret-down" *ngIf="!timeOptionClick"></i>
+      </div>
+
+      <div *ngIf="timeOptionClick" class="w-100 option-box">
+        <div class="w-100 overflow-handler">
+          <div
+            class="options"
+            [class.activeOption]="time === selectedTime"
+            *ngFor="let time of timeSlots"
+            (click)="selectedTimeFn(time)"
+          >
+            <div (click)="time === selectedTime && selectTimeOption()">
+              {{ time }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <label class="helper reg blue"></label>
+    </div>
+
+    <div class="d-flex flex-column">
+      <label class="at-form-label mb-6px" for="seating"
+        >Seating Arrangement</label
+      >
+      <div
+        class="at-textbox mb-6px d-flex justify-content-between"
+        (click)="selectSeatingOption()"
+      >
+        <div>{{ selectedSeat }}</div>
+        <i class="ph ph-caret-down" *ngIf="!seatOptionClick"></i>
+      </div>
+
+      <div *ngIf="seatOptionClick" class="w-100 option-box">
+        <div class="w-100 overflow-handler" style="max-height: 200px">
+          <div
+            class="options"
+            [class.activeRoom]="seat === selectedSeat"
+            *ngFor="let seat of seatingSlots"
+            (click)="selectSeatingOption()"
+          >
+            <div (click)="selectedSeatFn(seat)">
+              {{ seat }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex flex-column">
+      <label class="at-form-label mb-6px" for="instructions"
+        >Any Additional Instructions</label
+      >
+      <textarea
+        name="instructions"
+        formControlName="instructions"
+        class="at-textbox mb-6px"
+        style="height: auto"
+        rows="4"
+        placeholder="Enter any additional request"
+      ></textarea>
+    </div>
+    <hr class="m-0" />
+    <div>
+      <button class="at-button mb-4">Proceed</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,15 @@
+<div class="d-flex flex-column common-pg-layout">
+  <div class="d-flex py-3">
+    <div class="d-flex align-items-center gap-2" (click)="navigate()">
+      <i class="ph ph-arrow-circle-left helper" style="font-size: 20px"></i>
+      <div class="helper">Account</div>
+    </div>
+  </div>
+  <div class="d-flex col-12 flex-column">
+    <div class="at-font-h6-bold mb-1">Meeting Room</div>
+    <div class="helper mb-4">
+      Have a place for all your professional meetings
+    </div>
+    <router-outlet></router-outlet>
+  </div>
+</div>

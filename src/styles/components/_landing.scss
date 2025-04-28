@@ -73,4 +73,12 @@
 .helper {
   @extend .at-font-b3-med;
   color: $gray-500;
+
+  &.reg {
+    @extend .at-font-b3-reg;
+  }
+
+  &.blue {
+    color: $blue-600;
+  }
 }

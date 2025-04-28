@@ -9,6 +9,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { OtploginComponent } from './otplogin/otplogin.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { MeetingComponent } from './meeting/meeting.component';
+import { RoomListComponent } from './meeting/room-list/room-list.component';
+import { RoomReservationComponent } from './meeting/room-reservation/room-reservation.component';
+import { RoomOrderSummaryComponent } from './meeting/room-order-summary/room-order-summary.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +21,10 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
     HomeComponent,
     OtploginComponent,
     EditProfileComponent,
+    MeetingComponent,
+    RoomListComponent,
+    RoomReservationComponent,
+    RoomOrderSummaryComponent,
   ],
   imports: [
     CommonModule,

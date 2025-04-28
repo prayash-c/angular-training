@@ -10,7 +10,7 @@
         <div class="helper">Sent to {{ email }}</div>
       </div>
       <form
-        class="col-12 col-md-6"
+        class="col-12"
         [formGroup]="otpForm"
         (ngSubmit)="onSubmit()"
         novalidate
@@ -46,7 +46,7 @@
           </label>
 
           <button
-            class="at-button-resend"
+            class="at-button-gray"
             (click)="resendOtp()"
             [disabled]="timeLeft > 0"
           >
@@ -55,7 +55,7 @@
 
           <button
             class="btn btn-primary at-button"
-            [disabled]="otpForm.get('otp')?.invalid || timeLeft > 0"
+            [disabled]="otpForm.invalid || timeLeft > 0"
           >
             Verify & Login
           </button>

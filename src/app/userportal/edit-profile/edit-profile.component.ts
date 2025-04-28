@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ApiService } from '../api.service';
-import { userinfo } from 'src/app/api';
+import { ApiService } from '../../services/api.service';
+import { userinfo } from 'src/app/models/api';
 import { Route, Router } from '@angular/router';
 import { LoaderService } from 'src/app/loader/loader.service';
 import { ToastrService } from 'ngx-toastr';
 import { CommonToastr } from 'src/app/toastr/common.toastr';
-import { UserinfoService } from '../userinfo.service';
+import { UserinfoService } from '../../services/userinfo.service';
 
 @Component({
   selector: 'app-edit-profile',

@@ -6,6 +6,10 @@ import { HomeComponent } from './home/home.component';
 import { OtploginComponent } from './otplogin/otplogin.component';
 import { authGuard } from '../auth/auth.guard';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { MeetingComponent } from './meeting/meeting.component';
+import { RoomListComponent } from './meeting/room-list/room-list.component';
+import { RoomReservationComponent } from './meeting/room-reservation/room-reservation.component';
+import { RoomOrderSummaryComponent } from './meeting/room-order-summary/room-order-summary.component';
 
 const routes: Routes = [
   {
@@ -48,6 +52,20 @@ const routes: Routes = [
       route: 'edit',
     },
   },
+  {
+    path: 'meeting',
+    component: MeetingComponent,
+    canActivate: [authGuard],
+    data: {
+      route: 'meeting',
+    },
+    children: [
+      { path: '', component: RoomListComponent },
+
+      { path: 'room-order-summary', component: RoomOrderSummaryComponent },
+    ],
+  },
+  { path: 'room-reservation', component: RoomReservationComponent },
 ];
 
 @NgModule({

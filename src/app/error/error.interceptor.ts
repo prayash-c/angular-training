@@ -14,7 +14,7 @@ import {
   throwError,
 } from 'rxjs';
 
-import { ApiService } from '../userportal/api.service';
+import { ApiService } from '../services/api.service';
 import { Router } from '@angular/router';
 
 @Injectable()

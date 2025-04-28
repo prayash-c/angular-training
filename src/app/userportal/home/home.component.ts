@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { UserinfoService } from '../userinfo.service';
+import { UserinfoService } from '../../services/userinfo.service';
 import { Router } from '@angular/router';
-import { ApiService } from '../api.service';
-import { userinfo } from 'src/app/api';
+import { ApiService } from '../../services/api.service';
+import { userinfo } from 'src/app/models/api';
 import { LoaderService } from 'src/app/loader/loader.service';
 import { ToastrService } from 'ngx-toastr';
 import { CommonToastr } from 'src/app/toastr/common.toastr';
@@ -43,9 +43,6 @@ export class HomeComponent implements OnInit {
     sessionStorage.clear();
     this.commonToastr.toastrSuccess('logged in successfully!');
     this.fetchUserDetails();
-    this.fetchUserDetails();
-    this.fetchUserDetails();
-    this.fetchUserDetails();
     this.getLoading();
   }
 
@@ -74,5 +71,9 @@ export class HomeComponent implements OnInit {
 
   edit() {
     this.router.navigate(['edit']);
+  }
+
+  meeting() {
+    this.router.navigate(['meeting']);
   }
 }

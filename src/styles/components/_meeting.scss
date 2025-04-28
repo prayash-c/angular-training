@@ -1,0 +1,79 @@
+.meeting-card {
+  border: 1px solid $gray-300;
+  border-radius: 8px;
+}
+
+.meeting-img {
+  height: 180px;
+  border-radius: 8px 8px 0px 0px;
+  overflow: hidden;
+
+  & img {
+    object-fit: contain;
+    width: 100%;
+    object-position: center;
+  }
+}
+
+.modal-content {
+  padding: 24px 16px;
+  border-radius: 16px;
+  background-color: white;
+
+  @include media-breakpoint-down(sm) {
+    margin: auto 16px;
+  }
+}
+
+.ellipsis {
+  height: 72px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @include media-breakpoint-down(sm) {
+    height: 42px;
+    -webkit-line-clamp: 2;
+  }
+}
+
+.option-box {
+  height: auto;
+
+  position: relative;
+
+  & .overflow-handler {
+    background-color: #ffffff;
+    max-height: 240px;
+    border: 1px solid $gray-300;
+    border-radius: 4px;
+    overflow: auto;
+    position: absolute;
+  }
+
+  & .options {
+    padding: 10px 14px;
+    height: 40px;
+    width: 100%;
+
+    &:hover {
+      background-color: #f5faff;
+    }
+
+    &.activeOption {
+      color: rgba(0, 0, 0, 0.87);
+      font-weight: 600;
+      background-color: #ebf5ff;
+    }
+
+    &.activeRoom {
+      background-color: #ebf5ff;
+    }
+  }
+}
+
+i::before {
+  font-size: 20px;
+}

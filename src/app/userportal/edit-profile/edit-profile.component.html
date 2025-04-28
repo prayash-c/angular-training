@@ -1,4 +1,4 @@
-<div *ngIf="!loadingState" class="d-grid update-page">
+<div *ngIf="!loadingState" class="d-grid common-pg-layout">
   <div class="d-flex py-3">
     <div class="d-flex align-items-center gap-2" (click)="navigateHome()">
       <i class="ph ph-arrow-circle-left helper" style="font-size: 20px"></i>
@@ -6,7 +6,7 @@
     </div>
   </div>
   <div class="d-flex col-12 flex-column overflow-auto">
-    <div class="title-heading mb-3">Edit Profile</div>
+    <div class="at-font-h6-bold mb-3">Edit Profile</div>
     <form
       class="d-grid gap-4"
       [formGroup]="updateProfileForm"
@@ -14,16 +14,20 @@
     >
       <div class="d-grid gap-1">
         <label class="at-form-label">Name</label>
-        <div class="d-flex">
+        <div
+          class="d-flex align-items-center at-textbox py-0"
+          [class.invalid]="updateProfileForm.get('fullname')?.invalid"
+        >
           <input
-            class="at-textbox w100"
-            [class.invalid]="updateProfileForm.get('fullname')?.invalid"
+            style="outline: none"
+            class="border-0 h-100 w-100"
             formControlName="fullname"
           />
-          <!-- <i
+          <i
+            *ngIf="updateProfileForm.get('fullname')?.invalid"
             class="ph ph-warning-circle"
             style="font-size: 16px; color: #fda29b"
-          ></i> -->
+          ></i>
         </div>
         <span
           class="warning"
@@ -46,9 +50,9 @@
       <div class="d-grid gap-1">
         <label class="at-form-label w100">Phone Number</label>
         <div
-          class="d-flex flex-row at-textbox w100"
+          class="d-flex at-textbox py-0 align-items-center"
           [class.invalid]="updateProfileForm.get('phone')?.invalid"
-          style="padding: 0px"
+          style="padding-left: 0px"
         >
           <input
             type="text"
@@ -57,10 +61,15 @@
           />
           <input
             type="text"
-            class="phone-box"
+            class="phone-box w-100"
             formControlName="phone"
             maxlength="10"
           />
+          <i
+            *ngIf="updateProfileForm.get('phone')?.invalid"
+            class="ph ph-warning-circle"
+            style="font-size: 16px; color: #fda29b"
+          ></i>
         </div>
         <span
           class="warning"
@@ -141,7 +150,7 @@
                 Contact Us
               </button>
               <button
-                class="at-button-resend w100"
+                class="at-button-gray w100"
                 style="height: 40px"
                 (click)="logout()"
               >

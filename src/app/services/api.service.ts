@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { emailValidate } from '../api';
+import { emailValidate } from '../models/api';
 import { HttpClient } from '@angular/common/http';
 import { Binary } from '@angular/compiler';
 import { Form } from '@angular/forms';
@@ -18,14 +18,14 @@ export class ApiService {
   // https://dev-api.stayeasyonline.com/stayeasyapi/v1/user/generateOtp -> after register
 
   emailOtp(email: string) {
-    return this.http.post<emailValidate>(
+    return this.http.post(
       `https://dev-api.stayeasyonline.com/stayeasyapi/v1/user/sendLoginOtp`,
       { emailAddress: email }
     );
   }
 
   validateOtp(email: string, otp: string) {
-    return this.http.post<emailValidate>(
+    return this.http.post(
       `https://dev-api.stayeasyonline.com/stayeasyapi/v1/user/validateLoginOtp`,
       { emailAddress: email, otp: otp }
     );

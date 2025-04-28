@@ -1,6 +1,6 @@
 import { CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
-import { UserinfoService } from '../userportal/userinfo.service';
+import { UserinfoService } from '../services/userinfo.service';
 
 export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
@@ -26,16 +26,17 @@ export const authGuard: CanActivateFn = (route, state) => {
       //   return false;
       // }
     }
+    if (expectedRoute === 'meeting') {
+      return true;
+    }
     router.navigate(['home'], { replaceUrl: true });
     return false;
   } else {
-    if (expectedRoute === 'login') {
+    if (expectedRoute === 'login' || String(checkSession)) {
       return true;
-    } else if (expectedRoute !== checkSession) {
+    } else {
       router.navigate(['login']);
       return false;
-    } else {
-      return true;
     }
   }
 };

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { UserinfoService } from '../userinfo.service';
+import { UserinfoService } from '../../services/userinfo.service';
 import { LoadChildren, Router } from '@angular/router';
-import { ApiService } from '../api.service';
+import { ApiService } from '../../services/api.service';
 import { LoaderService } from 'src/app/loader/loader.service';
 
 @Component({
