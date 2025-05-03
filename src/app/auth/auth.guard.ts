@@ -4,8 +4,10 @@ import { UserinfoService } from '../services/userinfo.service';
 
 export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
+  const userInfoService = inject(UserinfoService);
   const token = localStorage.getItem('accessToken');
   const expectedRoute = route.data['route']; // gets the data from route which is being activated
+  const email = userInfoService.getEmail;
 
   let checkSession =
     sessionStorage.getItem('otpSession') ||

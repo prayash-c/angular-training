@@ -4,8 +4,9 @@ import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { userinfo } from 'src/app/models/api';
 import { LoaderService } from 'src/app/loader/loader.service';
-import { ToastrService } from 'ngx-toastr';
 import { CommonToastr } from 'src/app/toastr/common.toastr';
+import { StaysRes } from 'src/app/models/stays.model';
+import { HotelInfoService } from 'src/app/services/hotel-info.service';
 
 @Component({
   selector: 'app-home',
@@ -13,23 +14,10 @@ import { CommonToastr } from 'src/app/toastr/common.toastr';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  constructor(
-    private router: Router,
-    private apiService: ApiService,
-    public loaderService: LoaderService,
-    private commonToastr: CommonToastr
-  ) {}
-
   loadingState: boolean = true;
-
-  getLoading() {
-    this.loaderService.loadingEvent.subscribe({
-      next: (res: boolean) => {
-        this.loadingState = res;
-      },
-    });
-  }
-
+  stays: StaysRes[] = [];
+  staysOptionClick: boolean = false;
+  selectedStay: string = '';
   userInfo: userinfo = {
     aboutMe: '',
     contact: '',
@@ -39,11 +27,39 @@ export class HomeComponent implements OnInit {
     profilePicUrl: null,
   };
 
+  constructor(
+    private router: Router,
+    private apiService: ApiService,
+    public loaderService: LoaderService,
+    private commonToastr: CommonToastr,
+    private hotelInfoServcie: HotelInfoService
+  ) {}
+
   ngOnInit(): void {
     sessionStorage.clear();
     this.commonToastr.toastrSuccess('logged in successfully!');
+    this.setHotelInfoLS();
     this.fetchUserDetails();
     this.getLoading();
+    this.fetchUserStays();
+  }
+
+  getLoading() {
+    this.loaderService.loadingEvent.subscribe({
+      next: (res: boolean) => {
+        this.loadingState = res;
+      },
+    });
+  }
+
+  setHotelInfoLS() {
+    const stay = localStorage.getItem('selectedStay');
+    if (stay) {
+      const hotel = JSON.parse(stay);
+      this.selectedStay = hotel.hotelName;
+      localStorage.setItem('hotelId', hotel.hotel);
+      localStorage.setItem('stayId', hotel.id);
+    }
   }
 
   fetchUserDetails() {
@@ -67,6 +83,30 @@ export class HomeComponent implements OnInit {
         console.log('error getting user details', err);
       },
     });
+  }
+
+  fetchUserStays() {
+    this.apiService.getStays().subscribe({
+      next: (res: any) => {
+        this.stays = res.staysResponse;
+      },
+    });
+  }
+
+  staysOption() {
+    this.staysOptionClick = !this.staysOptionClick;
+  }
+
+  selectedStaysFn(selected: string) {
+    this.selectedStay = selected;
+    const selectedStay = this.stays.findIndex(
+      (hotel) => hotel.hotelName === this.selectedStay
+    );
+    localStorage.setItem(
+      'selectedStay',
+      JSON.stringify(this.stays[selectedStay])
+    );
+    this.setHotelInfoLS();
   }
 
   edit() {

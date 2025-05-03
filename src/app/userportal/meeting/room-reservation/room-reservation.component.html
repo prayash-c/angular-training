@@ -15,38 +15,69 @@
       <label class="at-form-label mb-6px"
         >When would you like your service?</label
       >
+      <div class="d-flex flex-row gap-2 gap-sm-3 overflow-x-auto">
+        <div *ngFor="let date of fullDate; let i = index" class="mb-2">
+          <div
+            class="date-card d-flex flex-column align-items-center"
+            (click)="bookedDay(i)"
+            [class.active]="i === selectedDay"
+          >
+            <div class="mb-2">{{ date | date : "EEE" | uppercase }}</div>
+            <div>{{ date | date : "d" }}</div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="d-flex flex-column">
       <label class="at-form-label mb-6px" for="people">How many people?</label>
       <input
         name="people"
-        type="text"
+        type="number"
         formControlName="noOfPeople"
         class="at-textbox mb-6px"
         placeholder="Enter the no of people"
       />
-      <label class="helper reg">Maximum room size = {{ 40 }}</label>
+      <label class="helper reg"
+        >Maximum room size = {{ meetingRoomList.size }}</label
+      >
     </div>
     <div class="d-flex flex-column">
       <label class="at-form-label mb-6px" for="hours">How many hours?</label>
       <input
         name="hours"
-        type="text"
+        type="number"
         formControlName="noOfHours"
         class="at-textbox mb-6px"
         placeholder="Enter the no of hours"
       />
     </div>
+
     <div class="d-flex flex-column">
       <label class="at-form-label mb-6px" for="time">Expected Start Time</label>
       <div
-        class="at-textbox mb-6px d-flex justify-content-between"
-        (click)="selectTimeOption()"
+        class="mb-6px d-flex align-items-center justify-content-end py-0"
+        [ngClass]="{
+          'at-textbox': selectedDay !== null,
+          'at-textbox-disabled': selectedDay === null
+        }"
+        style="position: relative"
       >
-        <div>{{ selectedTime }}</div>
-        <i class="ph ph-caret-down" *ngIf="!timeOptionClick"></i>
+        <input
+          readonly
+          [disabled]="selectedDay === null"
+          value="{{ selectedTime }}"
+          class="w-100 h-100 border-0"
+          style="outline: none"
+          placeholder="Expected Start Time"
+          (click)="selectTimeOption()"
+        />
+        <i
+          class="ph ph-caret-down"
+          style="position: absolute"
+          *ngIf="!timeOptionClick"
+          (click)="selectTimeOption()"
+        ></i>
       </div>
-
       <div *ngIf="timeOptionClick" class="w-100 option-box">
         <div class="w-100 overflow-handler">
           <div
@@ -61,27 +92,60 @@
           </div>
         </div>
       </div>
-      <label class="helper reg blue"></label>
+      <label *ngIf="showOperateTime !== null" class="helper reg blue"
+        >Operational Time :-
+        <li>{{ showOperateTime }}</li></label
+      >
     </div>
 
     <div class="d-flex flex-column">
       <label class="at-form-label mb-6px" for="seating"
         >Seating Arrangement</label
       >
-      <div
-        class="at-textbox mb-6px d-flex justify-content-between"
-        (click)="selectSeatingOption()"
+      <!-- <div
+        class="mb-6px d-flex py-0 {{
+          selectedDay === null ? 'at-textbox-disabled' : 'at-textbox'
+        }}"
       >
-        <div>{{ selectedSeat }}</div>
-        <i class="ph ph-caret-down" *ngIf="!seatOptionClick"></i>
+        <select formControlName="seating" class="custom-dropdown">
+          <div>
+            <option value="" disabled selected hidden>
+              Select seating arrangement
+            </option>
+          </div>
+          <option
+            *ngFor="
+              let seat of meetingRoomList.supportedSeatingArrangement.split(',')
+            "
+          >
+            {{ seat }}
+          </option>
+          <i class="ph ph-caret-down"></i>
+        </select>
+      </div> -->
+      <div class="at-textbox mb-6px d-flex align-items-center py-0">
+        <input
+          readonly
+          value="{{ selectedSeat }}"
+          class="w-100 h-100 border-0"
+          style="outline: none"
+          placeholder="Select the seating arrangement"
+          (click)="selectSeatingOption()"
+        />
+        <i
+          class="ph ph-caret-down"
+          *ngIf="!seatOptionClick"
+          (click)="selectSeatingOption()"
+        ></i>
       </div>
-
       <div *ngIf="seatOptionClick" class="w-100 option-box">
         <div class="w-100 overflow-handler" style="max-height: 200px">
           <div
             class="options"
-            [class.activeRoom]="seat === selectedSeat"
-            *ngFor="let seat of seatingSlots"
+            [class.activeOption]="seat === selectedSeat"
+            *ngFor="
+              let seat of meetingRoomList.supportedSeatingArrangement.split(',')
+            "
             (click)="selectSeatingOption()"
           >
             <div (click)="selectedSeatFn(seat)">
@@ -91,6 +155,7 @@
         </div>
       </div>
     </div>
+
     <div class="d-flex flex-column">
       <label class="at-form-label mb-6px" for="instructions"
         >Any Additional Instructions</label

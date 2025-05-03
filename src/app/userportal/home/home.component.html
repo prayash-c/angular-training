@@ -25,11 +25,43 @@
         </div>
       </div>
       <hr />
-      <div class="d-flex flex-column flex-md-row gap-1">
+      <div class="d-flex flex-column flex-md-row gap-3">
         <button class="at-button-gray w-100" (click)="edit()">Edit</button>
-        <button class="at-button-gray w-100" (click)="meeting()">
+        <button
+          class="at-button-gray w-100"
+          (click)="meeting()"
+          [disabled]="selectedStay == ''"
+        >
           Reserve Meeting Room
         </button>
+      </div>
+      <hr />
+      <div class="d-flex flex-column">
+        <label class="at-form-label mb-6px" for="seating"
+          >Which stay are you booking services for?</label
+        >
+        <div
+          class="at-textbox mb-6px d-flex justify-content-between"
+          (click)="staysOption()"
+        >
+          <div>{{ selectedStay }}</div>
+          <i class="ph ph-caret-down" *ngIf="!staysOptionClick"></i>
+        </div>
+
+        <div *ngIf="staysOptionClick" class="w-100 option-box">
+          <div class="w-100 overflow-handler" style="max-height: 200px">
+            <div
+              class="options"
+              [class.activeOption]="hotel.hotelName === selectedStay"
+              *ngFor="let hotel of stays"
+              (click)="staysOption()"
+            >
+              <div (click)="selectedStaysFn(hotel.hotelName)">
+                {{ hotel.hotelName }}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

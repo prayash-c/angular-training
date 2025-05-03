@@ -9,12 +9,4 @@ import { Router } from '@angular/router';
 export class MeetingComponent implements OnInit {
   constructor(private router: Router) {}
   ngOnInit(): void {}
-
-  navigate() {
-    if (sessionStorage.getItem('session') === 'room-reservation') {
-      this.router.navigateByUrl('meeting');
-    } else {
-      this.router.navigate(['home']);
-    }
-  }
 }

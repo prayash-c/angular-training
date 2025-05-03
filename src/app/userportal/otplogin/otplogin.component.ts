@@ -89,8 +89,12 @@ export class OtploginComponent {
 
   moveToNext(event: any, index: number) {
     const input = event.target;
-    const value = input.value; // gives triggered key number
-    if (value.length === 1 && index < this.otpArray.length - 1) {
+    const value = input?.value; // gives triggered key number
+    if (
+      value.length === 1 &&
+      index < this.otpArray.length - 1 &&
+      !isNaN(value)
+    ) {
       input.nextElementSibling?.focus(); // event.target.nextElementSibling
     }
     if (!event.target.nextElementSibling) {

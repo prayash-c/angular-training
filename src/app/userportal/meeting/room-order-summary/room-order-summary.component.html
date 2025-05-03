@@ -1,1 +1,160 @@
-<p>room-order-summary works!</p>
+<div class="d-grid common-pg-layout">
+  <div class="d-flex py-3">
+    <div class="d-flex align-items-center gap-2" (click)="navigate()">
+      <i class="ph ph-arrow-circle-left helper" style="font-size: 20px"></i>
+      <div class="helper">Meeting Room</div>
+    </div>
+  </div>
+  <div class="at-font-h6-bold mb-4">Order Summary</div>
+  <div class="d-flex col-12 flex-column overflow-auto">
+    <div class="d-flex flex-column gap-3 mb-4">
+      <div class="d-flex flex-column">
+        <div class="at-font-b3-bold">When would you like your service?</div>
+        <div class="at-font-b2-reg">
+          {{ reservationDetails.reservedTime | date : "d MMM y, EEEE" }}
+        </div>
+      </div>
+      <div class="d-flex flex-column">
+        <div class="at-font-b3-bold">How many people?</div>
+        <div class="at-font-b2-reg">
+          {{ reservationDetails.numberOfPeople }}
+        </div>
+      </div>
+      <div class="d-flex flex-column">
+        <div class="at-font-b3-bold">How many hours?</div>
+        <div class="at-font-b2-reg">
+          {{ reservationDetails.numberOfHoursBooked }}
+        </div>
+      </div>
+      <div class="d-flex flex-column">
+        <div class="at-font-b3-bold">Expected Start Time</div>
+        <div class="at-font-b2-reg">
+          {{ reservationDetails.reservedTime | date : "shortTime" }}
+        </div>
+      </div>
+      <div class="d-flex flex-column">
+        <div class="at-font-b3-bold">Seating Arrangement</div>
+        <div class="at-font-b2-reg">
+          {{ reservationDetails.seatingArrangement }}
+        </div>
+      </div>
+      <div class="d-flex flex-column">
+        <div class="at-font-b3-bold">Additional Requests</div>
+        <div
+          class="at-font-b2-reg"
+          [class.gray-400]="reservationDetails.instructions === ''"
+        >
+          {{
+            reservationDetails.instructions !== ""
+              ? reservationDetails.instructions
+              : "none"
+          }}
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex flex-column p-3 outer-cover light">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="at-font-b1-bold">Bill Summary</div>
+        <div class="d-flex gap-1">
+          <div *ngIf="!billCollapse" class="at-font-b1-bold blue">
+            AED {{ reservationDetails?.price }}
+          </div>
+          <i
+            (click)="billSummary()"
+            class="{{ billCollapse ? 'ph ph-caret-up' : 'ph ph-caret-down' }} "
+            style="font-size: 24px"
+          ></i>
+        </div>
+      </div>
+      <div *ngIf="billCollapse" class="mt-3">
+        <div
+          class="at-font-b2-med gray-400 d-flex justify-content-between mb-4"
+        >
+          <div>
+            Order Total (AED {{ basePrice }} x
+            {{ reservationDetails?.numberOfHoursBooked }})
+          </div>
+          <div>AED {{ reservationDetails?.price }}</div>
+        </div>
+        <div class="d-flex justify-content-between">
+          <div class="at-font-b2-bold">Final Total</div>
+          <div class="at-font-b1-bold blue">
+            AED {{ reservationDetails?.price }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex flex-column mb-4">
+      <hr class="my-3" />
+      <label class="at-form-label mb-6px">Payment Mode</label>
+      <input
+        type="text"
+        class="at-textbox-disabled"
+        [disabled]="true"
+        value="{{ reservationDetails.paymentType }}"
+      />
+    </div>
+  </div>
+  <div class="row">
+    <hr class="my-3" />
+    <div class="mb-4">
+      <label class="helper">Meeting Rooms are subject to availability.</label>
+    </div>
+    <div class="d-flex flex-column w-100 gap-1 mb-4">
+      <div class="d-flex align-items-center mb-4">
+        <div
+          class="at-checkbox-med me-1 d-flex justify-content-center"
+          (click)="onCancelPolicyToggle()"
+        >
+          <div
+            class="checkmark d-flex justify-content-center align-items-center"
+            *ngIf="cancelPolicyCheck"
+          >
+            <i class="ph-bold ph-check"></i>
+          </div>
+        </div>
+
+        <label class="at-form-label"
+          >I agree to the
+          <span
+            class="at-form-label"
+            style="cursor: pointer; color: #3374fe"
+            data-bs-toggle="modal"
+            data-bs-target="#policyModal"
+          >
+            Booking cancellation policy</span
+          >
+        </label>
+      </div>
+
+      <div class="d-flex gap-3 gap-md-4">
+        <button
+          class="at-button-gray d-flex align-items-center justify-content-center"
+          (click)="navigate()"
+        >
+          <i class="ph ph-caret-circle-left me-1"></i>Edit Order
+        </button>
+        <button class="at-button" (click)="submit()">Pay Now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="policyModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="d-flex flex-row justify-content-between mb-4">
+        <div class="at-font-h6-bold">Cancellation Policy</div>
+        <i
+          type="button"
+          class="ph ph-x-circle fs-4"
+          style="color: #667085"
+          data-bs-dismiss="modal"
+        ></i>
+      </div>
+      <div class="at-font-b3-reg mb-4">{{ cancellationPolicy }}</div>
+    </div>
+  </div>
+</div>

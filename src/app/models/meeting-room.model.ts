@@ -1,6 +1,20 @@
+export interface MeetingRoomImage {
+  id: number;
+  url: string;
+  archived: number;
+}
+
 export interface MeetingRoom {
-  image: string;
-  title: string;
+  id: number;
+  meetingRoomImages: MeetingRoomImage[];
+  name: string;
+  directionAndLocation: string;
   description: string;
-  price: number;
+  supportedSeatingArrangement: string;
+  basePricePerHour: number;
+  operationalTiming: string;
+  supportedPaymentModes: string;
+  cancellationPolicy: string;
+  tvAvailble: string;
+  size: number;
 }

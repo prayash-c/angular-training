@@ -47,6 +47,8 @@
 
   &-disabled {
     @include textbox-base;
+    background-color: #ebebf1;
+    color: $gray-400;
 
     &:disabled {
       background-color: #ebebf1;
@@ -83,7 +85,7 @@
 }
 
 .otp-form {
-  width: 336px; //100%
+  width: 100%;
   @include media-breakpoint-down(md) {
     width: 100%;
   }
@@ -170,6 +172,10 @@
   background-color: $blue-100;
   border-radius: 10px;
   padding: 16px;
+
+  &.light {
+    background-color: $gray-100;
+  }
 }
 
 .country-code {

@@ -1,71 +1,125 @@
-<div class="row g-4 g-sm-3 g-lg-4">
-  <div
-    *ngFor="let meetingRoom of meetingRoomList; let i = index"
-    class="col-12 col-sm-6 col-lg-4"
-  >
-    <div class="meeting-card">
-      <div class="meeting-img">
-        <img src="assets/panorama.jpg" />
-      </div>
-      <div class="d-flex flex-column p-3">
-        <div class="at-font-b1-bold mb-2">{{ meetingRoom.title }}</div>
-        <div class="at-font-b2-reg mb-3 ellipsis">
-          {{ meetingRoom.description }}
-        </div>
-        <div class="at-font-b1-bold mb-3" style="color: #3374fe">
-          AED {{ meetingRoom.price }}/hour
-        </div>
-        <div class="d-flex gap-3">
-          <button class="at-button" (click)="reservation()">Book</button
-          ><button
-            class="at-button secondary"
-            data-bs-toggle="modal"
-            data-bs-target="#myModal"
-            (click)="currentIndex = i"
-          >
-            Features
-          </button>
+<div class="d-flex flex-column common-pg-layout">
+  <div class="d-flex py-3">
+    <div class="d-flex align-items-center gap-2" (click)="navigate()">
+      <i class="ph ph-arrow-circle-left helper" style="font-size: 20px"></i>
+      <div class="helper">Account</div>
+    </div>
+  </div>
+  <div class="d-flex col-12 flex-column">
+    <div class="at-font-h6-bold mb-1">Meeting Room</div>
+    <div class="helper mb-4">
+      Have a place for all your professional meetings
+    </div>
+
+    <div class="row g-4 g-sm-3 g-lg-4">
+      <div
+        *ngFor="let meetingRoom of meetingRoomList; let i = index"
+        class="col-12 col-sm-6 col-lg-4"
+      >
+        <div class="meeting-card">
+          <div class="meeting-img">
+            <img src="{{ meetingRoom.meetingRoomImages[0].url }}" />
+          </div>
+          <div class="d-flex flex-column p-3">
+            <div class="at-font-b1-bold mb-2">{{ meetingRoom.name }}</div>
+            <div class="at-font-b2-reg mb-3 ellipsis">
+              {{ meetingRoom.description }}
+            </div>
+            <div class="at-font-b1-bold mb-3" style="color: #3374fe">
+              AED {{ meetingRoom.basePricePerHour }}/hour
+            </div>
+            <div class="d-flex gap-3">
+              <button class="at-button" (click)="bookMeetingRoom(meetingRoom)">
+                Book</button
+              ><button
+                class="at-button secondary"
+                data-bs-toggle="modal"
+                data-bs-target="#myModal"
+                (click)="currentIndex = i"
+              >
+                Features
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-<div class="modal fade" id="myModal" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="d-flex flex-row justify-content-between mb-4">
-        <div class="at-font-h6-bold">
-          {{ roomFeatures[currentIndex].title }}
-        </div>
-        <i
-          type="button"
-          class="ph ph-x-circle fs-4"
-          style="color: #667085"
-          data-bs-dismiss="modal"
-        ></i>
-      </div>
-      <div class="at-font-b3-reg mb-4">
-        <div class="mb-3">
-          {{ roomFeatures[currentIndex].description }}
-        </div>
-        <div class="d-flex flex-column mb-3">
-          <div>Seating Types :</div>
-          <div *ngFor="let seating of roomFeatures[currentIndex].seating">
-            {{ seating }}
+    <div class="modal fade" id="myModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="d-flex flex-row justify-content-between mb-4">
+            <div class="at-font-h6-bold">
+              {{ meetingRoomList[currentIndex]?.name }}
+            </div>
+            <i
+              type="button"
+              class="ph ph-x-circle fs-4"
+              style="color: #667085"
+              data-bs-dismiss="modal"
+            ></i>
           </div>
-        </div>
-        <div>
-          TV/AV Available : {{ roomFeatures[currentIndex].tvAvAvailable }}
-        </div>
-      </div>
-      <div class="">
-        <div class="d-flex justify-content-end gap-3 mb-2">
-          <i class="ph ph-arrow-circle-left fs-4" style="color: #667085"></i>
-          <i class="ph ph-arrow-circle-right fs-4" style="color: #667085"></i>
-        </div>
-        <div class="meeting-img">
-          <img src="assets/panorama.jpg" />
+          <div class="at-font-b3-reg mb-4">
+            <div class="mb-3">
+              {{ meetingRoomList[currentIndex]?.description }}
+            </div>
+            <div class="d-flex flex-column mb-3">
+              <div>Seating Types :</div>
+              <li
+                *ngFor="
+                  let seating of meetingRoomList[
+                    currentIndex
+                  ]?.supportedSeatingArrangement?.split(',')
+                "
+              >
+                {{ seating }}
+              </li>
+            </div>
+            <div>
+              TV/AV Available :
+              {{
+                meetingRoomList[currentIndex]?.tvAvailble === "true"
+                  ? "Yes"
+                  : "No"
+              }}
+            </div>
+          </div>
+          <div
+            class="d-flex justify-content-end gap-3 mb-2"
+            *ngIf="
+              meetingRoomList[currentIndex]?.meetingRoomImages?.length !== 1
+            "
+          >
+            <i
+              type="button"
+              data-bs-target="#featureCarousel"
+              data-bs-slide="prev"
+              class="ph ph-caret-circle-left fs-4"
+              style="color: #667085"
+            ></i>
+            <i
+              type="button"
+              data-bs-target="#featureCarousel"
+              data-bs-slide="next"
+              class="ph ph-caret-circle-right fs-4"
+              style="color: #667085"
+            ></i>
+          </div>
+          <div id="featureCarousel" class="carousel slide">
+            <div class="carousel-inner">
+              <div
+                class="carousel-item {{
+                  firstIndex ? 'active' : ''
+                }} meeting-img"
+                *ngFor="
+                  let img of meetingRoomList[currentIndex]?.meetingRoomImages;
+                  let firstIndex = first
+                "
+              >
+                <img src="{{ img?.url }}" />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

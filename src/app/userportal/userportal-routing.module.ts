@@ -61,11 +61,10 @@ const routes: Routes = [
     },
     children: [
       { path: '', component: RoomListComponent },
-
+      { path: 'room-reservation', component: RoomReservationComponent },
       { path: 'room-order-summary', component: RoomOrderSummaryComponent },
     ],
   },
-  { path: 'room-reservation', component: RoomReservationComponent },
 ];
 
 @NgModule({
